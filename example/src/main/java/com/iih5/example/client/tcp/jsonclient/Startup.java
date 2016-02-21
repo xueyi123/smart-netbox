@@ -1,4 +1,4 @@
-package example.client.tcp;/*
+/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,
@@ -13,24 +13,17 @@ package example.client.tcp;/*
  * License for the specific language governing permissions and limitations
  * under the License.
  */
+package com.iih5.example.client.tcp.jsonclient;
 
-public class MyDO {
-    int uid=100;
-    String name="king";
 
-    public int getUid() {
-        return uid;
-    }
+import com.iih5.netbox.core.MessageType;
 
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+public class Startup {
+	public static JsonClient client;
+	public static void main(String[] args) {
+		System.err.println("---------------TCP测试---------------");
+		client = new JsonClient();
+		client.setMessageType(MessageType.JSON_TYPE);
+		client.connect("127.0.0.1", 9230);
+	}
 }

@@ -13,25 +13,27 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package example.server;
+package com.iih5.example.server;
 
 
-import com.iih5.netbox.NetBoxEngine;
-import com.iih5.netbox.NetBoxEngineSetting;
-import com.iih5.netbox.core.MessageType;
-import com.iih5.netbox.core.TransformType;
+import com.iih5.netbox.annotation.InOut;
+import com.iih5.netbox.core.ConnectExtension;
+import com.iih5.netbox.session.ISession;
+import com.iih5.netbox.session.SessionManager;
 
-public class Startup {
-	public static void main(String[] args) {
-		System.out.println("服务端启动");
-		NetBoxEngineSetting setting  = new NetBoxEngineSetting();
-		setting.setBasePackage("example.server");
-		setting.setPort(9230);
-		setting.setMessageType(MessageType.PROTO_TYPE);
-		setting.setTransformType(TransformType.TCP);
+@InOut("connect/disconnect callback")
+public class ConnectOrDisconnectExtension extends ConnectExtension {
 
-		NetBoxEngine boxEngine = new NetBoxEngine();
-		boxEngine.setSettings(setting);
-		boxEngine.start();
+	public void connect(ISession session) {
+		// TODO Auto-generated method stub
+		System.err.println("n,,,,,,,,连接成功、、、、、、、、、、、...");
+
 	}
+
+	public void disConnect(ISession session) {
+		// TODO Auto-generated method stub
+		System.err.println(",,,,,,,,,断开连接、、、、、、、、、、、...");
+	}
+
+
 }

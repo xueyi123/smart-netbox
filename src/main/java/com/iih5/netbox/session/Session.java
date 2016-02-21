@@ -115,13 +115,14 @@ public class Session implements ISession {
 				msg.resetReaderIndex();
 				channel.writeAndFlush(msg);
 			}else {
-				if (GlobalConstant.messageType== MessageType.BYTE_TYPE||
+				if (GlobalConstant.messageType== MessageType.STRING_TYPE||
 						GlobalConstant.messageType==MessageType.JSON_TYPE) {
 					channel.writeAndFlush(new TextWebSocketFrame(msg.getId()+"#"+msg.toString()));
 				}else {
 					msg.resetReaderIndex();
-					ByteBuf byteBuf= Unpooled.buffer(msg.toArray().length+HEAD_SIZE);
-					byteBuf.writeInt(byteBuf.array().length);
+					int len=msg.toArray().length+HEAD_SIZE;
+					ByteBuf byteBuf= Unpooled.buffer(len);
+					byteBuf.writeInt(len);
 					byteBuf.writeShort(msg.getId());
 					byteBuf.writeBytes(msg.toArray());
 					channel.writeAndFlush(new BinaryWebSocketFrame(byteBuf));

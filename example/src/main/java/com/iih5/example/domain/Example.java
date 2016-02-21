@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package example.client.tcp;
+package com.iih5.example.domain;
 
 public final class Example {
   private Example() {}

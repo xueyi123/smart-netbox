@@ -13,14 +13,15 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package example.client.tcp;
-import com.iih5.netbox.message.*;
+package com.iih5.example.client.tcp.jsonclient;
+
+import com.iih5.example.domain.UserVO;
+import com.iih5.netbox.message.JsonMessage;
+import com.iih5.netbox.message.Message;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-import java.io.UnsupportedEncodingException;
-
-public class TcpClientHandler extends ChannelInboundHandlerAdapter{
+public class JsonClientHandler extends ChannelInboundHandlerAdapter{
 
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
@@ -28,20 +29,11 @@ public class TcpClientHandler extends ChannelInboundHandlerAdapter{
 
 		for (int i = 0; i <10 ; i++) {
 			String data= "|你好吗。SmartBoxServer....|";
-			MyDO myDO = new MyDO();
-			//StringMessage netMessage = new StringMessage((short) 1001,data);
-
-//			ByteMessage netMessage = new ByteMessage((short) 1001);
-//			netMessage.writeInt(110);
-//			netMessage.writeString("|helloworld|");
-//			netMessage.writeInt(119);
-		//	FirstProtobuf.testBuf.Builder builder=FirstProtobuf.testBuf.newBuilder();
-
-			Example.Message.Builder netMessage = Example.Message.newBuilder();
-			netMessage.setText("你好吗的啊");
-			netMessage.setNumber(10022);
-
-			ctx.channel().writeAndFlush(new ProtoMessage((short) 1001,netMessage));
+			UserVO userVO = new UserVO();
+			userVO.setAge((short) 18);
+			userVO.setNickName(data);
+			userVO.setUid(1000123);
+			ctx.channel().writeAndFlush(new JsonMessage((short) 3001,userVO));
 		}
 
 

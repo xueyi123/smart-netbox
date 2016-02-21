@@ -22,7 +22,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package example.client.tcp;
+package com.iih5.example.client.tcp.byteclient;
 
 import com.iih5.netbox.codec.TcpProtocolDecoder;
 import com.iih5.netbox.codec.TcpProtocolEncoder;
@@ -39,12 +39,12 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TcpClient {
+public class ByteClient {
 	private Bootstrap boost = new Bootstrap();
 	private String ip;
 	private int port;
 	public Timer timer = new Timer();
-	public TcpClient() {
+	public ByteClient() {
 		boost.group(new NioEventLoopGroup()).channel(NioSocketChannel.class)
 		.handler(new ChannelInitializer<SocketChannel>() {
 			@Override
@@ -101,7 +101,7 @@ public class TcpClient {
 			ChannelPipeline p = ch.pipeline();
 			p.addLast(new TcpProtocolDecoder());
 			p.addLast(new TcpProtocolEncoder());
-			p.addLast(new TcpClientHandler());
+			p.addLast(new ByeClientHandler());
 		}
 	}
 }

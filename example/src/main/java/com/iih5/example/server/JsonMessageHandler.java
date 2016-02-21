@@ -1,4 +1,4 @@
-/*
+package com.iih5.example.server;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,
@@ -13,27 +13,24 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package example.server;
 
-
-import com.iih5.netbox.annotation.InOut;
-import com.iih5.netbox.core.ConnectExtension;
+import com.iih5.example.domain.UserVO;
+import com.iih5.netbox.annotation.Protocol;
+import com.iih5.netbox.annotation.Request;
+import com.iih5.netbox.message.JsonMessage;
+import com.iih5.netbox.message.Message;
 import com.iih5.netbox.session.ISession;
-import com.iih5.netbox.session.SessionManager;
 
-@InOut("connect/disconnect callback")
-public class TestExtension extends ConnectExtension {
-
-	public void connect(ISession session) {
-		// TODO Auto-generated method stub
-		System.err.println("n,,,,,,,,连接成功、、、、、、、、、、、...");
-
-	}
-
-	public void disConnect(ISession session) {
-		// TODO Auto-generated method stub
-		System.err.println(",,,,,,,,,断开连接、、、、、、、、、、、...");
-	}
-
-
+@Request
+public class JsonMessageHandler {
+    //注：协议号是不能重复的
+    @Protocol(value=3001)
+    public void test(Message msg, ISession session) throws Exception {
+        short msgId= msg.getId();
+        JsonMessage jsonMessage =(JsonMessage)msg;
+        UserVO userVO= jsonMessage.parseObject(UserVO.class);
+        userVO.getNickName();
+        System.out.println(msg.toString());
+        //TODO ...
+    }
 }

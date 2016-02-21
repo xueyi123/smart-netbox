@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package example.client.websocket;
+package com.iih5.example.client.websocket;
 
 import com.iih5.netbox.message.Message;
 import com.iih5.netbox.session.ISession;

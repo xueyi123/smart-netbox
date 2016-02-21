@@ -13,17 +13,17 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package example.client.tcp;
+package com.iih5.example.client.tcp.byteclient;
 
 
 import com.iih5.netbox.core.MessageType;
 
 public class Startup {
-	public static TcpClient client;
+	public static ByteClient client;
 	public static void main(String[] args) {
 		System.err.println("---------------TCP测试---------------");
-		client = new TcpClient();
-		client.setMessageType(MessageType.PROTO_TYPE);
+		client = new ByteClient();
+		client.setMessageType(MessageType.BYTE_TYPE);
 		client.connect("127.0.0.1", 9230);
 	}
 }
