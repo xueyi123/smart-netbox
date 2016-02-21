@@ -5,20 +5,20 @@
     <parent>
         <artifactId>SmartNetBox</artifactId>
         <groupId>com.iih5</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.iih5</groupId>
     <artifactId>example</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
 
     <dependencies>
         <dependency>
             <groupId>com.iih5</groupId>
             <artifactId>SmartNetBox</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 
