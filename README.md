@@ -67,4 +67,9 @@ SessionManager是个全局的Session管理类，利用这个类管理Session的�
 协议自己定义
 
 ##后续后继续加上各个语言的客户端API,方便同学们使用
+##例子在example模块下面
+
+##API查看地址
+http://smartnetbox.doc.www.iih5.com
+
 
