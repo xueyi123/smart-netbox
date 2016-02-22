@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.iih5</groupId>
-    <artifactId>SmartNetBox</artifactId>
+    <artifactId>smart-netbox</artifactId>
     <!--打包时记得把pom改为jar-->
     <packaging>pom</packaging>
     <version>1.0</version>
@@ -33,7 +33,7 @@
     </dependencies>
 
 
-    <name>SmartNetBox</name>
+    <name>smart-netbox</name>
     <description>一个基于Netty的TCP/WebSocket服务端网络框架,性能高效,稳定,简单易上手</description>
     <url>http://www.iih5.com/</url>
 
@@ -52,9 +52,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:https://github.com/xueyi123/SmartNetBox.git</connection>
-        <developerConnection>scm:git:https://github.com/xueyi123/SmartNetBox.git</developerConnection>
-        <url>https://github.com/xueyi123/SmartNetBox.git</url>
+        <connection>scm:git:https://github.com/xueyi123/smart-netbox.git</connection>
+        <developerConnection>scm:git:https://github.com/xueyi123/smart-netbox.git</developerConnection>
+        <url>https://github.com/xueyi123/smart-netbox.git</url>
     </scm>
 
 
