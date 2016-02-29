@@ -32,7 +32,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 public class TcpStateHandler extends ChannelInboundHandlerAdapter {
     //连接成功
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("dddddddddddddddddddddddddddddddddd");
         //连接成功,绑定工作线程
         IActor actor = SessionManager.getInstance().createActor();
         Session session = new Session(ctx.channel(), actor);
