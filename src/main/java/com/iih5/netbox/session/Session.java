@@ -48,19 +48,10 @@ public class Session implements ISession {
 		sessionID = UUID.randomUUID().toString();
 	}
 
-	public short getTmpMsgId() {
-		return tmpMsgId;
-	}
-
-	public void setTmpMsgId(short tmpMsgId) {
-		this.tmpMsgId = tmpMsgId;
-	}
-
 	public Channel getChannel() {
 		return channel;
 	}
 
-	
 	public String  getId() {
 		return sessionID;
 	}

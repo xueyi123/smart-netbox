@@ -108,16 +108,4 @@ public interface ISession {
      * @return
      */
     public String getUserID();
-
-    /**
-     * 获取当前消息编码
-     * @return
-     */
-    public short getTmpMsgId() ;
-
-    /**
-     * 设置当前消息编码
-     * @param tmpMsgId
-     */
-    public void setTmpMsgId(short tmpMsgId);
 }
