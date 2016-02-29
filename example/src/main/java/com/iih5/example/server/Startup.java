@@ -27,7 +27,7 @@ public class Startup {
 		NetBoxEngineSetting setting  = new NetBoxEngineSetting();
 		setting.setBasePackage("com.iih5.example.server");//handler所在目录
 		setting.setPort(9230);
-		setting.setMessageType(MessageType.BYTE_TYPE);//不同的数据类型，需要要记得指定
+		setting.setMessageType(MessageType.JSON_TYPE);//不同的数据类型，需要要记得指定
 		setting.setTransformType(TransformType.TCP);//要记得指定
 
 		NetBoxEngine boxEngine = new NetBoxEngine();

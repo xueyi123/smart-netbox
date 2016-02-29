@@ -46,7 +46,6 @@ public interface ISession {
      * @param msg
      */
     public void send(Message msg);
-
     /**
      * 设置参数
      * @param key
@@ -109,4 +108,16 @@ public interface ISession {
      * @return
      */
     public String getUserID();
+
+    /**
+     * 获取当前消息编码
+     * @return
+     */
+    public short getTmpMsgId() ;
+
+    /**
+     * 设置当前消息编码
+     * @param tmpMsgId
+     */
+    public void setTmpMsgId(short tmpMsgId);
 }

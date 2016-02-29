@@ -32,6 +32,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 public class TcpStateHandler extends ChannelInboundHandlerAdapter {
     //连接成功
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("dddddddddddddddddddddddddddddddddd");
         //连接成功,绑定工作线程
         IActor actor = SessionManager.getInstance().createActor();
         Session session = new Session(ctx.channel(), actor);
@@ -62,6 +63,7 @@ public class TcpStateHandler extends ChannelInboundHandlerAdapter {
                 session.getActor().execute(new Runnable() {
                     public void run() {
                         try {
+                            session.setTmpMsgId(message.getId());
                             cmdHandler.getMethod().invoke(cmdHandler.getClas().newInstance(), message, session);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -72,6 +74,11 @@ public class TcpStateHandler extends ChannelInboundHandlerAdapter {
                 System.err.println("cmdId:" + message.getId() + " 不存在");
             }
         }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+      //TODO
     }
 
     //空闲处理，读、写、读或写3种类型

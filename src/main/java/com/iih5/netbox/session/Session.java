@@ -37,6 +37,7 @@ public class Session implements ISession {
 	private String userId;
 	private Info info;
 	private Map<String, Object> parasMap=new Hashtable<String, Object>();
+	private short tmpMsgId;
 	public Session (Channel channel){
 		this.channel=channel;
         sessionID = UUID.randomUUID().toString();
@@ -46,7 +47,15 @@ public class Session implements ISession {
 		this.actor=actor;
 		sessionID = UUID.randomUUID().toString();
 	}
-	
+
+	public short getTmpMsgId() {
+		return tmpMsgId;
+	}
+
+	public void setTmpMsgId(short tmpMsgId) {
+		this.tmpMsgId = tmpMsgId;
+	}
+
 	public Channel getChannel() {
 		return channel;
 	}
@@ -109,7 +118,6 @@ public class Session implements ISession {
 	//包头6个字节
 	private final static int HEAD_SIZE =PACK_LEN+TYPE_LEN;
 	public void send(Message msg) {
-
 		if (channel!=null) {
 			if (GlobalConstant.netType== TransformType.TCP) {
 				msg.resetReaderIndex();
@@ -130,5 +138,4 @@ public class Session implements ISession {
 			}
 		}
 	}
-
 }
