@@ -70,6 +70,6 @@ SessionManager是个全局的Session管理类，利用这个类管理Session的�
 ##例子在example模块下面
 
 ##API查看地址
-http://smartnetbox.doc.www.iih5.com
+http://doc.iih5.com/netbox/index.html
 
 
