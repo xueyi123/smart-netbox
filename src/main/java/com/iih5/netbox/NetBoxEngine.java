@@ -15,6 +15,7 @@
  */
 package com.iih5.netbox;
 
+import com.iih5.netbox.actor.CurrentUtils;
 import com.iih5.netbox.actor.QueueActorManager;
 import com.iih5.netbox.annotation.InOut;
 import com.iih5.netbox.annotation.Protocol;
@@ -40,7 +41,6 @@ import java.util.List;
 public class NetBoxEngine {
 	public static ConnectExtension extension=null;
 	private NetBoxEngineSetting settings=null;
-	private QueueActorManager actorManager=null;
 	public NetBoxEngine() {
 		this.settings =new NetBoxEngineSetting();
 	}
@@ -55,17 +55,17 @@ public class NetBoxEngine {
 	}
 	/**启动网络服务*/
 	public void start() {
-		if (actorManager!=null) {
-			SessionManager.getInstance().setActorManager(actorManager);
+		if (settings.getPlayerThreadSize()>0){
+			SessionManager.getInstance().setActorManager(new QueueActorManager(settings.getPlayerThreadSize(), CurrentUtils.createThreadFactory("User-Pool-")));
 		}else {
-			SessionManager.getInstance().setSessionTheadNum(settings.getPlayerThreadSize());
+			throw new UnsupportedOperationException("用户管理线程数量不能小于1个!");
 		}
 		EventLoopGroup bossGroup   = new NioEventLoopGroup(settings.getBossThreadSize());
 		EventLoopGroup workerGroup = new NioEventLoopGroup(settings.getWorkerThreadSize());
 		try {
 			ServerBootstrap b = new ServerBootstrap();
 			if (settings.getBasePackage()==null || settings.getBasePackage().equals("")) {
-				throw new NullPointerException("请设置协议映射扫描目录，比如 com.ab");
+				throw new UnsupportedOperationException("请设置协议映射扫描目录，比如 com.ab");
 			}else {
 				protocalMapping();
 				if (settings.getTransformType()==0) {

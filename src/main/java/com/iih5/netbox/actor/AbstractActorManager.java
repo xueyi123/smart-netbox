@@ -22,7 +22,7 @@ import java.util.concurrent.ThreadFactory;
 public abstract class AbstractActorManager implements IActorManager {
 	protected int threadSize;
 	protected ExecutorService threadPool;
-	private static final ThreadFactory DEFAULT_THREAD_FACTORY=CurrentUtils.createThreadFactory("Message-Task-Pool-");
+	private static final ThreadFactory DEFAULT_THREAD_FACTORY=CurrentUtils.createThreadFactory("Pool-");
 	
 	public AbstractActorManager(int threadSize, ThreadFactory factory){
 		this.threadSize=threadSize;

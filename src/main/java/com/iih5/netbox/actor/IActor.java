@@ -33,11 +33,11 @@ public interface IActor {
 	 * */
 	ActorState getActorState();
 	/**
-	 * 获取任务执行Executor
+	 * 获取任务执行Executor（线程）
 	 * */
 	IActorExecutor getExecutor();
 	/**
-	 * 设置提交者的任务执行Executor
+	 * 设置提交者的任务执行Executor（线程）
 	 * */
 	void setExecutor(IActorExecutor executor);
 	/**

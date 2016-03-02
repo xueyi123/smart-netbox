@@ -20,6 +20,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * ActorExecutor翻译为导演执行者，即线程
  * 顺序执行的RunnableExecutor
  * 确保先提交的任务一定先执行
  * @author Chenlong

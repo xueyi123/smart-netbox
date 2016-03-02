@@ -67,7 +67,7 @@ public class SessionManager {
 	}
 	public IActor createActor() {
 		if (this.actorManager==null) {
-			this.actorManager = new QueueActorManager(threadNum, CurrentUtils.createThreadFactory("Player-Pool-"));
+			this.actorManager = new QueueActorManager(threadNum, CurrentUtils.createThreadFactory("User-Pool-"));
 		}
 		return actorManager.createActor();
 	}

@@ -39,6 +39,7 @@ public class Mtest {
 //
 //		}
 		IActor actor= manager.createActor();
+		//actor.setExecutor();
 		for (int i = 0; i < 10000; i++) {
 			Future<?> d= actor.scheduledTask(new Runnable() {
 				public void run() {

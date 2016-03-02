@@ -29,7 +29,7 @@ public class NetBoxEngineSetting {
     /**netty Work线程数*/
     private int workerThreadSize=4;
     /**玩家管理线程数*/
-    private int playerThreadSize=30;
+    private int playerThreadSize=16;
     /**启动TCP服务*/
     private int transformType= TransformType.TCP;
     /**Request扫描路径*/
