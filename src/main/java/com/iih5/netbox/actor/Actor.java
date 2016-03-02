@@ -32,7 +32,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * Actor可以切换ActorExecutor 切换时为了保证线程安全一致性
  * 会改变Actor状态为ActorState.TRANSITIVE 处于此状态时，
  * 任务不会马上提交执行，而是会先放入缓冲队列中等待状态恢复正常时下次任务激活执行
- * @author Chenlong
  * */
 public class Actor implements IActor {
 	protected volatile IActorExecutor executor;

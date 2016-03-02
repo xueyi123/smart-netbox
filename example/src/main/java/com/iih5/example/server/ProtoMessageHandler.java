@@ -22,6 +22,8 @@ import com.iih5.netbox.message.Message;
 import com.iih5.netbox.session.ISession;
 import com.iih5.example.domain.Example;
 
+import java.util.concurrent.TimeUnit;
+
 @Request
 public class ProtoMessageHandler {
 	//注：协议号是不能重复的
@@ -32,6 +34,15 @@ public class ProtoMessageHandler {
 		message.getNumber();
 		System.out.println(message.getText());
 		session.send(msg);
+		//waitForNotice(msg,session);
 		//TODO ...
+	}
+	//定时通知
+	public void  waitForNotice(Message message,ISession session){
+		session.getActor().scheduledTask(new Runnable() {
+			public void run() {
+				System.out.println("hello world");
+			}
+		},1, TimeUnit.SECONDS);
 	}
 }
