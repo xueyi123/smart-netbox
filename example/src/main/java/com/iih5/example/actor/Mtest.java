@@ -47,7 +47,6 @@ public class Mtest {
 			},1, TimeUnit.SECONDS);
 		}
 
-
 		//d.cancel(true);
 		//System.out.println("取消了");
 	}
