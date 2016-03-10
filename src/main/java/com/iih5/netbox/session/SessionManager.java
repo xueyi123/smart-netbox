@@ -99,11 +99,14 @@ public class SessionManager {
 	 * @return
      */
 	public ISession getSession(Channel channel) {
-		ISession session = channelSession.get(channel);
-		if (session==null) {
-			return null;
+		if (channelSession.containsKey(channel)) {
+			ISession session = channelSession.get(channel);
+			if (session==null) {
+				return null;
+			}
+			return session;
 		}
-		return session;
+		return null;
 	}
 	/**
 	 * 获取session
@@ -111,9 +114,11 @@ public class SessionManager {
 	 * @return
 	 */
 	public ISession getSession(String userId){
-		Channel channel = uidChannel.get(userId);
-		if (channel!=null){
-			return  channelSession.get(channel);
+		if (uidChannel.containsKey(userId)) {
+			Channel channel = uidChannel.get(userId);
+			if (channel!=null){
+				return  channelSession.get(channel);
+			}
 		}
 		return null;
 	}
