@@ -29,6 +29,7 @@ import com.iih5.netbox.core.ConnectExtension;
 import com.iih5.netbox.session.SessionManager;
 import com.iih5.netbox.util.ClassUtil;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -74,7 +75,8 @@ public class NetBoxEngine {
 					.option(ChannelOption.SO_KEEPALIVE, true)
 					.channel(NioServerSocketChannel.class)
 					.childHandler(new TcpServerInitializer());
-					b.bind(settings.getPort()).sync();
+					ChannelFuture f=b.bind(settings.getPort()).sync();
+					f.channel().closeFuture().sync();
 					System.out.println("TCP port="+settings.getPort()+"启动成功！");
 				}else {
 					b.group(bossGroup, workerGroup)
@@ -89,7 +91,6 @@ public class NetBoxEngine {
 		}catch (InterruptedException e) {
 			workerGroup.shutdownGracefully();
 			bossGroup.shutdownGracefully();
-			e.printStackTrace();
 		}
 	}
 	//映射扫描
