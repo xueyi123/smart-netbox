@@ -42,18 +42,25 @@ public class SessionManager {
 	}
 
 	/**
-	 * 绑定用户自定义ID关联
+	 * 绑定用户关联
 	 * @param userId
 	 * @param channel
      * @return true 绑定成功
      */
-	public boolean putUserIDAndChannel(String userId,Channel channel){
+	public boolean bindUserIDAndChannel(String userId,Channel channel){
 		if (channelSession.get(channel)!=null){
 			uidChannel.put(userId,channel);
 			return true;
 		}else {
 			return false;
 		}
+	}
+	/**
+	 * 解除绑定用户关联
+	 * @param userId
+	 */
+	public void unBindUserIDAndChannel(String userId){
+		uidChannel.remove(userId);
 	}
 	/**
 	 * 设置session线程管理数量，默认16个

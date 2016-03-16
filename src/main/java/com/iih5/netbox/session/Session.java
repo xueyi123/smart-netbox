@@ -95,7 +95,12 @@ public class Session implements ISession {
 
 	public boolean bindUserID(String userId) {
 		this.userId=userId;
-		return SessionManager.getInstance().putUserIDAndChannel(userId,channel);
+		return SessionManager.getInstance().bindUserIDAndChannel(userId,channel);
+	}
+
+	public void unBindUserID(String userId) {
+		this.userId=null;
+		SessionManager.getInstance().unBindUserIDAndChannel(userId);
 	}
 
 	public String getUserID() {

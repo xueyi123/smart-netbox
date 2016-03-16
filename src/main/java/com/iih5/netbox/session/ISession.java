@@ -98,11 +98,15 @@ public interface ISession {
     public void clearParameters();
 
     /**
-     * 绑定用户自定义ID
+     * 绑定用户
      * @param userId
      */
     public boolean bindUserID(String userId);
-
+    /**
+    * 解除用户绑定
+    * @param userId
+    */
+    public void unBindUserID(String userId);
     /**
      * 获取用户自定义ID
      * @return
