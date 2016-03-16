@@ -39,6 +39,7 @@ public abstract class Message {
     public abstract <T> T parseObject(Class<T> clazz) throws  Exception;
 
     public AbstractMessageLite.Builder<?> parseObject(AbstractMessageLite.Builder<?> builder) throws InvalidProtocolBufferException {
+
         return null;
     }
 }
