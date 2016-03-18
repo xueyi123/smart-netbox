@@ -74,7 +74,6 @@ http://doc.iih5.com/netbox/index.html
 
 
 ###1.2版本
-
 <br>1）修改了底层传输协议，增加了协议编码2
 <br>2）修复部分bug
 <br>3)
