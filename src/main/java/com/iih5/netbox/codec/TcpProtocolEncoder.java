@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
- * The SmartORM Project licenses this file to you under the Apache License,
+ * The Smart-NetBox Project licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at:
  *
@@ -39,7 +39,7 @@ public class TcpProtocolEncoder extends MessageToByteEncoder<Object>{
 	private final static int TYPE_LEN = 2;
 	//包头6个字节
 	private final static int HEAD_SIZE =PACK_LEN+TYPE_LEN;
-	private Logger logger = Logger.getLogger(TcpProtocolDecoder2.class);
+	private Logger logger = Logger.getLogger(TcpProtocolDecoder.class);
 	protected void encode(ChannelHandlerContext ctx, Object message, ByteBuf out) throws Exception {
 		if (GlobalConstant.debug){
 			logger.info("编码发送数据包");
