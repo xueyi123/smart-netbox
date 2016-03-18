@@ -27,7 +27,7 @@ public class ProtoClientHandler extends ChannelInboundHandlerAdapter{
 
 		System.err.println("建立连接。。。");
 
-		for (int i = 0; i <10000 ; i++) {
+		for (int i = 0; i <10 ; i++) {
 			String data= "|你好吗。SmartBoxServer....|";
 			Example.Message.Builder netMessage = Example.Message.newBuilder();
 			netMessage.setText(data);

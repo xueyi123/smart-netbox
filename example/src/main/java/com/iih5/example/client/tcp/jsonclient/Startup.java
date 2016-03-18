@@ -16,7 +16,10 @@
 package com.iih5.example.client.tcp.jsonclient;
 
 
+import com.iih5.netbox.core.GlobalConstant;
 import com.iih5.netbox.core.MessageType;
+import com.iih5.netbox.core.ProtocolConstant;
+import com.iih5.netbox.core.TcpCodecType;
 
 public class Startup {
 	public static JsonClient client;
@@ -24,6 +27,7 @@ public class Startup {
 		System.err.println("---------------TCP测试---------------");
 		client = new JsonClient();
 		client.setMessageType(MessageType.JSON_TYPE);
+		GlobalConstant.debug=true;
 		client.connect("127.0.0.1", 9230);
 	}
 }

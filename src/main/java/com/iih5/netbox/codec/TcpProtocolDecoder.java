@@ -26,12 +26,13 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import org.apache.log4j.Logger;
 
 import java.nio.charset.Charset;
 import java.util.List;
 
 public class TcpProtocolDecoder extends ByteToMessageDecoder{
-
+	private Logger logger = Logger.getLogger(TcpProtocolDecoder.class);
 	//包字节长度,占用4个字节
 	private final static int PACK_LEN = 4;
 	//消息类型,占用2个字节
@@ -47,10 +48,13 @@ public class TcpProtocolDecoder extends ByteToMessageDecoder{
 				3）数据段      :采用byte[]形式存放
 		 */
 		// 判断数据包长度是否达到基本长度，小于意味数据不完整则不处理，等待下次数据到来时处理
+		if (GlobalConstant.debug){
+			logger.info("收到数据《《 size:"+buffer.readableBytes());
+		}
 		if (buffer.readableBytes()<HEAD_SIZE) {
 			return ;
 		}
-		buffer.markReaderIndex();//mark从头开始
+		buffer.markReaderIndex();//mark从这里开始读，做个标识
 		int   packSize = buffer.readInt();   // 包长度(4个字节)
 		short msgId  = buffer.readShort(); // 消息号(2个字节)
 		// 在读出包头后，还剩下实际数据长度的字节数
@@ -59,6 +63,9 @@ public class TcpProtocolDecoder extends ByteToMessageDecoder{
 			//数据包还不完整，复位，等待下次数据到来时处理
 			buffer.resetReaderIndex();
 			return;
+		}
+		if (GlobalConstant.debug){
+			logger.info("接收完整包数据信息《《 packSize:"+packSize+" msgId:"+msgId+" data size="+dataSize);
 		}
 		// 数据对象组装
 		ByteBuf b = Unpooled.buffer(dataSize);

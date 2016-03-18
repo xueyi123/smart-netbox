@@ -27,7 +27,7 @@ public class JsonClientHandler extends ChannelInboundHandlerAdapter{
 
 		System.err.println("建立连接。。。");
 
-		for (int i = 0; i <10 ; i++) {
+		for (int i = 0; i <100 ; i++) {
 			String data= "|你好吗。SmartBoxServer....|";
 			UserVO userVO = new UserVO();
 			userVO.setAge((short) 18);

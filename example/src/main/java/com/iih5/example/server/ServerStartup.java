@@ -19,17 +19,18 @@ package com.iih5.example.server;
 import com.iih5.netbox.NetBoxEngine;
 import com.iih5.netbox.NetBoxEngineSetting;
 import com.iih5.netbox.core.MessageType;
+import com.iih5.netbox.core.TcpCodecType;
 import com.iih5.netbox.core.TransformType;
 
-public class Startup {
+public class ServerStartup {
 	public static void main(String[] args) {
 		System.out.println("服务端启动");
 		NetBoxEngineSetting setting  = new NetBoxEngineSetting();
 		setting.setBasePackage("com.iih5.example.server");//handler所在目录
 		setting.setPort(9230);
-		setting.setMessageType(MessageType.JSON_TYPE);//不同的数据类型，需要要记得指定
+		setting.setMessageType(MessageType.STRING_TYPE);//不同的数据类型，需要要记得指定
 		setting.setTransformType(TransformType.TCP);//要记得指定
-
+		setting.setDebug(true);
 		NetBoxEngine boxEngine = new NetBoxEngine();
 		boxEngine.setSettings(setting);
 		boxEngine.start();//启动服务器

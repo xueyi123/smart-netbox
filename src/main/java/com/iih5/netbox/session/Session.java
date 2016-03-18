@@ -16,9 +16,7 @@
 package com.iih5.netbox.session;
 
 import com.iih5.netbox.actor.IActor;
-import com.iih5.netbox.core.GlobalConstant;
-import com.iih5.netbox.core.MessageType;
-import com.iih5.netbox.core.TransformType;
+import com.iih5.netbox.core.*;
 import com.iih5.netbox.message.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -37,7 +35,6 @@ public class Session implements ISession {
 	private String userId;
 	private Info info;
 	private Map<String, Object> parasMap=new Hashtable<String, Object>();
-	private short tmpMsgId;
 	public Session (Channel channel){
 		this.channel=channel;
         sessionID = UUID.randomUUID().toString();
@@ -112,29 +109,42 @@ public class Session implements ISession {
 		return this.userId;
 	}
 
-	//包字节长度,占用4个字节
-	private final static int PACK_LEN = 4;
-	//消息类型,占用2个字节
-	private final static int TYPE_LEN = 2;
-	//包头6个字节
-	private final static int HEAD_SIZE =PACK_LEN+TYPE_LEN;
 	public void send(Message msg) {
 		if (channel!=null) {
-			if (GlobalConstant.netType== TransformType.TCP) {
+			if (GlobalConstant.transformType== TransformType.TCP) {
 				msg.resetReaderIndex();
 				channel.writeAndFlush(msg);
 			}else {
 				if (GlobalConstant.messageType== MessageType.STRING_TYPE||
 						GlobalConstant.messageType==MessageType.JSON_TYPE) {
-					channel.writeAndFlush(new TextWebSocketFrame(msg.getId()+"#"+msg.toString()));
+					if (ProtocolConstant.TCP_CODEC_TYPE== TcpCodecType.CODEC_1){
+						channel.writeAndFlush(new TextWebSocketFrame(msg.toString().length()+"#"+msg.getId()+
+								"#"+msg.toString()));
+					}else {
+						channel.writeAndFlush(new TextWebSocketFrame(ProtocolConstant.PACK_HEAD_FLAG+"#"+
+								msg.toString().length()+"#"+msg.getId()+"#"+msg.getEncryptType()+"#"+msg.toString()));
+					}
 				}else {
-					msg.resetReaderIndex();
-					int len=msg.toArray().length+HEAD_SIZE;
-					ByteBuf byteBuf= Unpooled.buffer(len);
-					byteBuf.writeInt(len);
-					byteBuf.writeShort(msg.getId());
-					byteBuf.writeBytes(msg.toArray());
-					channel.writeAndFlush(new BinaryWebSocketFrame(byteBuf));
+					if (ProtocolConstant.TCP_CODEC_TYPE== TcpCodecType.CODEC_1){
+						msg.resetReaderIndex();
+						int len=msg.toArray().length+6;
+						ByteBuf byteBuf= Unpooled.buffer(len);
+						byteBuf.writeInt(len);
+						byteBuf.writeShort(msg.getId());
+						byteBuf.writeBytes(msg.toArray());
+						channel.writeAndFlush(new BinaryWebSocketFrame(byteBuf));
+					}else {
+						msg.resetReaderIndex();
+						int len=msg.toArray().length+7;
+						ByteBuf byteBuf= Unpooled.buffer(len);
+						byteBuf.writeByte(ProtocolConstant.PACK_HEAD_FLAG);
+						byteBuf.writeInt(len);
+						byteBuf.writeShort(msg.getId());
+						byteBuf.writeByte(msg.getEncryptType());
+						byteBuf.writeBytes(msg.toArray());
+						channel.writeAndFlush(new BinaryWebSocketFrame(byteBuf));
+					}
+
 				}
 			}
 		}

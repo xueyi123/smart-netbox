@@ -18,6 +18,7 @@ package com.iih5.netbox;
 
 import com.iih5.netbox.core.GlobalConstant;
 import com.iih5.netbox.core.MessageType;
+import com.iih5.netbox.core.ProtocolConstant;
 import com.iih5.netbox.core.TransformType;
 import com.iih5.netbox.message.Message;
 
@@ -30,12 +31,13 @@ public class NetBoxEngineSetting {
     private int workerThreadSize=4;
     /**玩家管理线程数*/
     private int playerThreadSize=16;
-    /**启动TCP服务*/
-    private int transformType= TransformType.TCP;
     /**Request扫描路径*/
     private String basePackage="com";
-    /**数据协议类型*/
-    private int messageType= MessageType.BYTE_TYPE;
+
+//    /**数据协议类型*/
+//    private int messageType= MessageType.BYTE_TYPE;
+//    /**启动TCP服务*/
+//    private int transformType= TransformType.TCP;
 
     public int getPort() {
         return port;
@@ -70,16 +72,15 @@ public class NetBoxEngineSetting {
     }
 
     public void setMessageType(int messageType) {
-        this.messageType=messageType;
-        GlobalConstant.messageType = this.messageType;
-    }
-
-    public int getTransformType() {
-        return transformType;
+        GlobalConstant.messageType =messageType;
     }
 
     public void setTransformType(int transformType) {
-        this.transformType = transformType;
+        GlobalConstant.transformType = transformType;
+    }
+
+    public int getTransformType() {
+        return  GlobalConstant.transformType;
     }
 
     public int getPlayerThreadSize() {
@@ -88,5 +89,20 @@ public class NetBoxEngineSetting {
 
     public void setPlayerThreadSize(int playerThreadSize) {
         this.playerThreadSize = playerThreadSize;
+    }
+
+    public boolean isDebug() {
+        return GlobalConstant.debug;
+    }
+    public void setDebug(boolean debug) {
+        GlobalConstant.debug = debug;
+    }
+
+    public int getCodecType() {
+        return ProtocolConstant.TCP_CODEC_TYPE;
+    }
+
+    public void setCodecType(int codecType) {
+        ProtocolConstant.TCP_CODEC_TYPE = codecType;
     }
 }

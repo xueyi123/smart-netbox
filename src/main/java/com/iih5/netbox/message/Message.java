@@ -22,8 +22,21 @@ import java.lang.reflect.InvocationTargetException;
 public abstract class Message {
     /**消息id*/
     private short id;
+    /**加密类型，默认不加密*/
+    private byte encryptType=0;
+    /**
+     * @param id 协议ID
+     */
     public Message(short id){
         this.id=id;
+    }
+    /**
+     * @param id 协议ID
+     * @param encr 加密类型，默认不加密
+     */
+    public Message(short id,byte encr){
+        this.id=id;
+        this.encryptType=encr;
     }
     public short getId() {
         return id;
@@ -32,6 +45,12 @@ public abstract class Message {
         this.id = id;
     }
 
+    public byte getEncryptType() {
+        return encryptType;
+    }
+    public void setEncryptType(byte encryptType) {
+        this.encryptType = encryptType;
+    }
     public abstract  byte[] toArray();
 
     public abstract void resetReaderIndex();

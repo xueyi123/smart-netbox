@@ -8,7 +8,7 @@
     <artifactId>smart-netbox</artifactId>
     <!--打包时记得把pom改为jar-->
     <packaging>pom</packaging>
-    <version>1.0</version>
+    <version>1.2</version>
     <!--打包上传时记得注释掉modules-->
     <modules>
         <module>example</module>
@@ -24,6 +24,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.7</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
         </dependency>
         <dependency>
             <groupId>com.google.protobuf</groupId>
@@ -68,93 +73,93 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>
-                    org.apache.maven.plugins
-                </groupId>
-                <artifactId>
-                    maven-source-plugin
-                </artifactId>
-                <version>2.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+    <!--<build>-->
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<groupId>-->
+                    <!--org.apache.maven.plugins-->
+                <!--</groupId>-->
+                <!--<artifactId>-->
+                    <!--maven-source-plugin-->
+                <!--</artifactId>-->
+                <!--<version>2.2.1</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>attach-sources</id>-->
+                        <!--<goals>-->
+                            <!--<goal>jar-no-fork</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
 
-            <plugin>
-                <dependencies>
-                    <dependency>
-                        <groupId>commons-lang</groupId>
-                        <artifactId>commons-lang</artifactId>
-                        <version>2.3</version>
-                    </dependency>
-                </dependencies>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
-                <configuration>
-                    <aggregate>true</aggregate>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-javadoc</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<dependencies>-->
+                    <!--<dependency>-->
+                        <!--<groupId>commons-lang</groupId>-->
+                        <!--<artifactId>commons-lang</artifactId>-->
+                        <!--<version>2.3</version>-->
+                    <!--</dependency>-->
+                <!--</dependencies>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-javadoc-plugin</artifactId>-->
+                <!--<version>2.9.1</version>-->
+                <!--<configuration>-->
+                    <!--<aggregate>true</aggregate>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>attach-javadoc</id>-->
+                        <!--<goals>-->
+                            <!--<goal>jar</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.5</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-gpg-plugin</artifactId>-->
+                <!--<version>1.5</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>sign-artifacts</id>-->
+                        <!--<phase>verify</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>sign</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+    <!--</build>-->
+<!---->
+    <!--<repositories>-->
+        <!--<repository>-->
+            <!--<id>central</id>-->
+            <!--<name>Central Repository</name>-->
+            <!--<url>http://repo.maven.apache.org/maven2</url>-->
+            <!--<layout>default</layout>-->
+            <!--<snapshots>-->
+                <!--<enabled>false</enabled>-->
+            <!--</snapshots>-->
+        <!--</repository>-->
+    <!--</repositories>-->
 
-    <repositories>
-        <repository>
-            <id>central</id>
-            <name>Central Repository</name>
-            <url>http://repo.maven.apache.org/maven2</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>central</id>
-            <name>Central Repository</name>
-            <url>http://repo.maven.apache.org/maven2</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-        </pluginRepository>
-    </pluginRepositories>
+    <!--<pluginRepositories>-->
+        <!--<pluginRepository>-->
+            <!--<id>central</id>-->
+            <!--<name>Central Repository</name>-->
+            <!--<url>http://repo.maven.apache.org/maven2</url>-->
+            <!--<layout>default</layout>-->
+            <!--<snapshots>-->
+                <!--<enabled>false</enabled>-->
+            <!--</snapshots>-->
+            <!--<releases>-->
+                <!--<updatePolicy>never</updatePolicy>-->
+            <!--</releases>-->
+        <!--</pluginRepository>-->
+    <!--</pluginRepositories>-->
 
 
 </project>

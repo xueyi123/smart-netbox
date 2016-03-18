@@ -25,7 +25,9 @@
 package com.iih5.example.client.tcp.byteclient;
 
 import com.iih5.netbox.codec.TcpProtocolDecoder;
+import com.iih5.netbox.codec.TcpProtocolDecoder2;
 import com.iih5.netbox.codec.TcpProtocolEncoder;
+import com.iih5.netbox.codec.TcpProtocolEncoder2;
 import com.iih5.netbox.core.GlobalConstant;
 import com.iih5.netbox.message.Message;
 import com.iih5.netbox.session.ISession;

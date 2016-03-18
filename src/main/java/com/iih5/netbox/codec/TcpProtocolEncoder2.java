@@ -17,6 +17,7 @@ package com.iih5.netbox.codec;
 
 import com.iih5.netbox.core.GlobalConstant;
 import com.iih5.netbox.core.MessageType;
+import com.iih5.netbox.core.ProtocolConstant;
 import com.iih5.netbox.message.ByteMessage;
 import com.iih5.netbox.message.JsonMessage;
 import com.iih5.netbox.message.ProtoMessage;
@@ -26,19 +27,17 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import org.apache.log4j.Logger;
 
-public class TcpProtocolEncoder extends MessageToByteEncoder<Object>{
+public class TcpProtocolEncoder2 extends MessageToByteEncoder<Object>{
 	/**
-	 ** 包格式：包长度(int)+消息码(short)+数据段(byte[])
-	 1）包长度      :表示该整个数据的长度(包含用于表示长度本身的字节)
-	 2）消息码      :表示该数据包类型
-	 3）数据段      :采用byte[]形式存放
+	 ** 包格式：包头(byte=1)+包长度(int=4)+消息码(short=2)+加密段(byte=1)+数据段(byte[])
+	 1）包头        :表示数据包合法性
+	 2）包长度      :表示整个数据的长度(包含用于表示长度本身的字节)
+	 3）消息码      :表示数据包类型
+	 4）加密段      :表示数据段是否加密,采用什么加密算法
+	 5）数据段      :采用byte[]形式存放
 	 */
-	//包长度,占用4个字节
-	private final static int PACK_LEN = 4;
-	//消息类型,占用2个字节
-	private final static int TYPE_LEN = 2;
-	//包头6个字节
-	private final static int HEAD_SIZE =PACK_LEN+TYPE_LEN;
+	//包头7个字节
+	private final static int HEAD_SIZE =7;
 	private Logger logger = Logger.getLogger(TcpProtocolDecoder2.class);
 	protected void encode(ChannelHandlerContext ctx, Object message, ByteBuf out) throws Exception {
 		if (GlobalConstant.debug){
@@ -46,7 +45,8 @@ public class TcpProtocolEncoder extends MessageToByteEncoder<Object>{
 		}
 		byte[] m=null;
 		int packLen=0;
-		short id=0;
+		short msgId=0;
+		byte encr=0;
 		// 数据对象组装
 		switch (GlobalConstant.messageType) {
 			case MessageType.BYTE_TYPE:
@@ -54,7 +54,8 @@ public class TcpProtocolEncoder extends MessageToByteEncoder<Object>{
 					ByteMessage byteMessage = (ByteMessage) message;
 					m=byteMessage.toArray();
 					packLen = m.length +HEAD_SIZE;
-					id=byteMessage.getId();
+					msgId=byteMessage.getId();
+					encr=byteMessage.getEncryptType();
 				}
 				break;
 			case MessageType.JSON_TYPE:
@@ -62,7 +63,8 @@ public class TcpProtocolEncoder extends MessageToByteEncoder<Object>{
 					JsonMessage jsonMessage = (JsonMessage) message;
 					m = jsonMessage.toArray();
 					packLen = m.length +HEAD_SIZE;
-					id=jsonMessage.getId();
+					msgId=jsonMessage.getId();
+					encr=jsonMessage.getEncryptType();
 				}
 				break;
 			case MessageType.PROTO_TYPE:
@@ -70,7 +72,8 @@ public class TcpProtocolEncoder extends MessageToByteEncoder<Object>{
 					ProtoMessage protoMessage = (ProtoMessage) message;
 					m = protoMessage.toArray();
 					packLen = m.length +HEAD_SIZE;
-					id=protoMessage.getId();
+					msgId=protoMessage.getId();
+					encr=protoMessage.getEncryptType();
 				}
 				break;
 			case MessageType.STRING_TYPE:
@@ -78,16 +81,19 @@ public class TcpProtocolEncoder extends MessageToByteEncoder<Object>{
 					StringMessage stringMessage = (StringMessage) message;
 					m = stringMessage.toArray();
 					packLen = m.length +HEAD_SIZE;
-					id=stringMessage.getId();
+					msgId=stringMessage.getId();
+					encr=stringMessage.getEncryptType();
 				}
 				break;
 		}
 		if (packLen>0){
+			out.writeByte(ProtocolConstant.PACK_HEAD_FLAG);
 			out.writeInt(packLen);
-			out.writeShort(id);
+			out.writeShort(msgId);
+			out.writeByte(encr);
 			out.writeBytes(m);
 			if (GlobalConstant.debug){
-				logger.info("发送完整包数据信息》》 packSize:"+packLen+" msgId:"+id+" data size="+m.length);
+				logger.info("发送完整包数据信息》》 packSize:"+packLen+" msgId:"+msgId+" encr:"+encr+" data size="+m.length);
 			}
 		}
 	}

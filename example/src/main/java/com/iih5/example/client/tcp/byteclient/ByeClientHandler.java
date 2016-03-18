@@ -26,7 +26,7 @@ public class ByeClientHandler extends ChannelInboundHandlerAdapter{
 
 		System.err.println("建立连接。。。");
 
-		for (int i = 0; i <10 ; i++) {
+		for (int i = 0; i <5 ; i++) {
 			String data= "|你好吗。SmartBoxServer....|";
 			ByteMessage netMessage = new ByteMessage((short) 2001);
 			netMessage.writeInt(110);

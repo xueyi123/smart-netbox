@@ -22,24 +22,25 @@ import com.iih5.netbox.annotation.Protocol;
 import com.iih5.netbox.annotation.Request;
 import com.iih5.netbox.codec.TcpServerInitializer;
 import com.iih5.netbox.codec.WebSocketServerInitializer;
-import com.iih5.netbox.core.AnnObject;
-import com.iih5.netbox.core.CmdHandlerCache;
-import com.iih5.netbox.core.GlobalConstant;
-import com.iih5.netbox.core.ConnectExtension;
+import com.iih5.netbox.core.*;
 import com.iih5.netbox.session.SessionManager;
 import com.iih5.netbox.util.ClassUtil;
+import com.iih5.netbox.util.ConsoleUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.apache.log4j.Logger;
+import sun.rmi.runtime.Log;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
 
 public class NetBoxEngine {
+	private static Logger logger = Logger.getLogger(NetBoxEngine.class);
 	public static ConnectExtension extension=null;
 	private NetBoxEngineSetting settings=null;
 	public NetBoxEngine() {
@@ -59,6 +60,7 @@ public class NetBoxEngine {
 		if (settings.getPlayerThreadSize()>0){
 			SessionManager.getInstance().setActorManager(new QueueActorManager(settings.getPlayerThreadSize(), CurrentUtils.createThreadFactory("User-Pool-")));
 		}else {
+			logger.error("用户管理线程数量不能小于1个!");
 			throw new UnsupportedOperationException("用户管理线程数量不能小于1个!");
 		}
 		EventLoopGroup bossGroup   = new NioEventLoopGroup(settings.getBossThreadSize());
@@ -66,10 +68,11 @@ public class NetBoxEngine {
 		try {
 			ServerBootstrap b = new ServerBootstrap();
 			if (settings.getBasePackage()==null || settings.getBasePackage().equals("")) {
+				logger.error("请设置协议映射扫描目录，比如 com.ab!");
 				throw new UnsupportedOperationException("请设置协议映射扫描目录，比如 com.ab");
 			}else {
 				protocalMapping();
-				if (settings.getTransformType()==0) {
+				if (settings.getTransformType()== TransformType.TCP) {
 					b.group(bossGroup, workerGroup)
 					.option(ChannelOption.TCP_NODELAY, true)
 					.option(ChannelOption.SO_KEEPALIVE, true)
@@ -77,18 +80,18 @@ public class NetBoxEngine {
 					.childHandler(new TcpServerInitializer());
 					ChannelFuture f=b.bind(settings.getPort()).sync();
 					f.channel().closeFuture().sync();
-					System.out.println("TCP port="+settings.getPort()+"启动成功！");
+					logger.info("TCP port="+settings.getPort()+"启动成功！");
 				}else {
 					b.group(bossGroup, workerGroup)
 					.channel(NioServerSocketChannel.class)
 					.childHandler(new WebSocketServerInitializer());
 					b.bind(settings.getPort()).sync();
-					GlobalConstant.netType=settings.getTransformType();
-					System.out.println("WebSocket port="+settings.getPort()+"启动成功！");
-					//System.out.println("Open your web browser and navigate to http://127.0.0.1:" + settings.port + '/');
+					logger.info("WebSocket port="+settings.getPort()+"启动成功！");
+					logger.info("Open your web browser and navigate to http://127.0.0.1:" + settings.getPort() + '/');
 				}
 			}
 		}catch (InterruptedException e) {
+			logger.error("服务器关闭 shutdown！");
 			workerGroup.shutdownGracefully();
 			bossGroup.shutdownGracefully();
 		}
@@ -120,9 +123,9 @@ public class NetBoxEngine {
 						Object obj = class1.newInstance();
 						extension=(ConnectExtension)obj;
 					} catch (InstantiationException e) {
-						e.printStackTrace();
+						logger.error("加载Extension 出错："+ ConsoleUtil.errException(e));
 					} catch (IllegalAccessException e) {
-						e.printStackTrace();
+						logger.error("加载Extension 出错："+ ConsoleUtil.errException(e));
 					}
 				}
 			}
