@@ -18,9 +18,13 @@ package com.iih5.example.server;
 
 import com.iih5.netbox.NetBoxEngine;
 import com.iih5.netbox.NetBoxEngineSetting;
+import com.iih5.netbox.codec.TcpProtocolDecoder;
+import com.iih5.netbox.codec.TcpProtocolEncoder;
 import com.iih5.netbox.core.MessageType;
 import com.iih5.netbox.core.TcpCodecType;
 import com.iih5.netbox.core.TransformType;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
 
 public class ServerStartup {
 	public static void main(String[] args) {
@@ -28,8 +32,8 @@ public class ServerStartup {
 		NetBoxEngineSetting setting  = new NetBoxEngineSetting();
 		setting.setBasePackage("com.iih5.example.server");//handler所在目录
 		setting.setPort(9230);
-		setting.setMessageType(MessageType.STRING_TYPE);//不同的数据类型，需要要记得指定
-		setting.setTransformType(TransformType.TCP);//要记得指定
+		setting.setMessageType(MessageType.BYTE_TYPE);//不同的数据类型，需要要记得指定
+		setting.setProtocolCoder(new TcpProtocolEncoder(),new TcpProtocolDecoder());
 		setting.setDebug(true);
 		NetBoxEngine boxEngine = new NetBoxEngine();
 		boxEngine.setSettings(setting);

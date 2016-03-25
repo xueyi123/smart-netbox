@@ -20,6 +20,7 @@ import com.google.protobuf.DynamicMessage;
 import com.google.protobuf.MessageLite;
 import com.iih5.netbox.NetBoxEngine;
 import com.iih5.netbox.actor.IActor;
+import com.iih5.netbox.annotation.Protocol;
 import com.iih5.netbox.core.*;
 import com.iih5.netbox.message.*;
 import com.iih5.netbox.session.ISession;
@@ -38,6 +39,8 @@ import io.netty.util.CharsetUtil;
 import org.apache.log4j.Logger;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
 import static io.netty.handler.codec.http.HttpHeaders.Names.HOST;
@@ -160,52 +163,14 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
             return;
         }
         if (frame instanceof BinaryWebSocketFrame) {
-            /**
-             ** 包格式：包头(byte=1)+包长度(int=4)+消息码(short=2)+加密段(byte=1)+数据段(byte[])
-             1）包头        :表示数据包合法性
-             2）包长度      :表示整个数据的长度(包含用于表示长度本身的字节)
-             3）消息码      :表示数据包类型
-             4）加密段      :表示数据段是否加密,采用什么加密算法
-             5）数据段      :采用byte[]形式存放
-             */
             BinaryWebSocketFrame bw = (BinaryWebSocketFrame) frame;
             ByteBuf content = bw.content();
-            byte headFlag=content.readByte(); //headFlag
-            if (headFlag!=ProtocolConstant.PACK_HEAD_FLAG){
-                if (GlobalConstant.debug){
-                    logger.error("检测到包头标识错误，正确包头应为："+ProtocolConstant.PACK_HEAD_FLAG);
-                }else {
-                    ctx.disconnect().channel().close();
-                }
-            }
-            int packLen=content.readInt(); //packLen
-            short msgId = content.readShort(); //cmdID
-            byte encr=content.readByte(); //encr
-            ByteBuf msgBuf = Unpooled.buffer(content.readableBytes());//content
-            content.readBytes(msgBuf);
-
+            List<Object> mlist = new ArrayList<Object>(1);
+            ProtocolConstant.webSocketProtocolDecoder.decode(ctx.channel(),content,mlist);
+            final Message message = (Message) mlist.get(0);
             final Channel channel = ctx.channel();
-            final AnnObject cmdHandler = CmdHandlerCache.getInstance().getAnnObject(msgId);
+            final AnnObject cmdHandler = CmdHandlerCache.getInstance().getAnnObject(message.getId());
             final ISession session = SessionManager.getInstance().getSession(channel);
-
-            switch (GlobalConstant.messageType){
-                case MessageType.BYTE_TYPE:
-                    message = new ByteMessage(msgId,msgBuf);
-                    break;
-                case MessageType.JSON_TYPE:
-                    message = new JsonMessage(msgId,new String(content.array(), Charset.forName("UTF-8")));
-                    break;
-                case MessageType.PROTO_TYPE:
-                    message = new ProtoMessage(msgId,content.array());
-                    break;
-                case MessageType.STRING_TYPE:
-                    message = new StringMessage(msgId,new String(content.array(), Charset.forName("UTF-8")));
-                    break;
-
-            }
-            if (GlobalConstant.debug){
-                logger.info("接收完整包数据信息《《 packSize:"+packLen+" msgId:"+msgId+" encr:"+encr+" data size="+msgBuf.array().length);
-            }
             if (cmdHandler != null && session != null) {
                 session.getActor().execute(new Runnable() {
                     public void run() {

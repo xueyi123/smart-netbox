@@ -21,6 +21,8 @@ import com.iih5.netbox.core.MessageType;
 import com.iih5.netbox.core.ProtocolConstant;
 import com.iih5.netbox.core.TransformType;
 import com.iih5.netbox.message.Message;
+import io.netty.channel.ChannelHandler;
+import io.netty.handler.codec.http.HttpServerCodec;
 
 public class NetBoxEngineSetting {
 	/**默认端口*/
@@ -33,11 +35,6 @@ public class NetBoxEngineSetting {
     private int playerThreadSize=16;
     /**Request扫描路径*/
     private String basePackage="com";
-
-//    /**数据协议类型*/
-//    private int messageType= MessageType.BYTE_TYPE;
-//    /**启动TCP服务*/
-//    private int transformType= TransformType.TCP;
 
     public int getPort() {
         return port;
@@ -75,14 +72,6 @@ public class NetBoxEngineSetting {
         GlobalConstant.messageType =messageType;
     }
 
-    public void setTransformType(int transformType) {
-        GlobalConstant.transformType = transformType;
-    }
-
-    public int getTransformType() {
-        return  GlobalConstant.transformType;
-    }
-
     public int getPlayerThreadSize() {
         return playerThreadSize;
     }
@@ -98,11 +87,18 @@ public class NetBoxEngineSetting {
         GlobalConstant.debug = debug;
     }
 
-    public int getCodecType() {
-        return ProtocolConstant.TCP_CODEC_TYPE;
-    }
+    /**
+     * 设置编码/解码，不设置则这采用默认 ProtocolDecoder2/ProtocolEncoder2
+     * @param codec 编码/解码
+     */
+    public void setProtocolCoder(ChannelHandler ...codec){
+        ChannelHandler[] c=codec;
+        if (c.length==1&& c[0] instanceof HttpServerCodec){
+            GlobalConstant.transformType=TransformType.WEB_SOCKET;
+        }else{
+            GlobalConstant.transformType=TransformType.TCP;
+            ProtocolConstant.DEFAULT_TCP_CODEC=codec;
+        }
 
-    public void setCodecType(int codecType) {
-        ProtocolConstant.TCP_CODEC_TYPE = codecType;
     }
 }

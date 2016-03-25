@@ -17,6 +17,7 @@ package com.iih5.netbox.codec;
 
 import com.iih5.netbox.core.ProtocolConstant;
 import com.iih5.netbox.core.TcpCodecType;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -24,22 +25,21 @@ import io.netty.handler.timeout.IdleStateHandler;
 
 public class TcpServerInitializer extends ChannelInitializer<SocketChannel>{
 	private final int idleTime=7200;//2小时
+	public ChannelHandler encoder;
+	public ChannelHandler decoder;
+	public TcpServerInitializer(ChannelHandler encoder,ChannelHandler decoder){
+		this.encoder=encoder;
+		this.decoder=decoder;
+	}
 	protected void initChannel(SocketChannel ch) throws Exception {
 		ChannelPipeline p = ch.pipeline();
-		if (ProtocolConstant.TCP_CODEC_TYPE== TcpCodecType.CODEC_1){
-			//解码：将二进制数据（如ByteBuf）装换成Java对象
-			p.addLast(new TcpProtocolDecoder());
-			//编码：将Java对象装换成二进制数据
-			p.addLast(new TcpProtocolEncoder());
-		}else {
-			//解码：将二进制数据（如ByteBuf）装换成Java对象
-			p.addLast(new TcpProtocolDecoder2());
-			//编码：将Java对象装换成二进制数据
-			p.addLast(new TcpProtocolEncoder2());
-		}
+		//解码：将二进制数据（如ByteBuf）装换成Java对象
+		p.addLast(decoder);
+		//编码：将Java对象装换成二进制数据
+		p.addLast(encoder);
 		//空闲：超时检测处理Handler
 		p.addLast(new IdleStateHandler(idleTime, 0, 0));
-		//执行业务逻辑
+		//逻辑：执行业务逻辑
 		p.addLast(new TcpStateHandler());
 	}
 }

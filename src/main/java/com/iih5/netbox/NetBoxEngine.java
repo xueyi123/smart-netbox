@@ -20,6 +20,8 @@ import com.iih5.netbox.actor.QueueActorManager;
 import com.iih5.netbox.annotation.InOut;
 import com.iih5.netbox.annotation.Protocol;
 import com.iih5.netbox.annotation.Request;
+import com.iih5.netbox.codec.TcpProtocolDecoder2;
+import com.iih5.netbox.codec.TcpProtocolEncoder2;
 import com.iih5.netbox.codec.TcpServerInitializer;
 import com.iih5.netbox.codec.WebSocketServerInitializer;
 import com.iih5.netbox.core.*;
@@ -28,10 +30,12 @@ import com.iih5.netbox.util.ClassUtil;
 import com.iih5.netbox.util.ConsoleUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpServerCodec;
 import org.apache.log4j.Logger;
 import sun.rmi.runtime.Log;
 
@@ -72,22 +76,31 @@ public class NetBoxEngine {
 				throw new UnsupportedOperationException("请设置协议映射扫描目录，比如 com.ab");
 			}else {
 				protocalMapping();
-				if (settings.getTransformType()== TransformType.TCP) {
+				if (ProtocolConstant.DEFAULT_WEB_SOCKET_CODEC!=null){
 					b.group(bossGroup, workerGroup)
-					.option(ChannelOption.TCP_NODELAY, true)
-					.option(ChannelOption.SO_KEEPALIVE, true)
-					.channel(NioServerSocketChannel.class)
-					.childHandler(new TcpServerInitializer());
-					ChannelFuture f=b.bind(settings.getPort()).sync();
-					f.channel().closeFuture().sync();
-					logger.info("TCP port="+settings.getPort()+"启动成功！");
-				}else {
-					b.group(bossGroup, workerGroup)
-					.channel(NioServerSocketChannel.class)
-					.childHandler(new WebSocketServerInitializer());
+							.channel(NioServerSocketChannel.class)
+							.childHandler(new HttpServerCodec());
 					b.bind(settings.getPort()).sync();
 					logger.info("WebSocket port="+settings.getPort()+"启动成功！");
 					logger.info("Open your web browser and navigate to http://127.0.0.1:" + settings.getPort() + '/');
+				}else {
+					if (ProtocolConstant.DEFAULT_TCP_CODEC==null){
+						//没有任何设置，则默认TCP协议，解码/编码TcpProtocolDecoder2/TcpProtocolEncoder2
+						GlobalConstant.transformType=TransformType.TCP;
+						ChannelHandler[] cr = new ChannelHandler[2];
+						cr[0]= new TcpProtocolDecoder2();
+						cr[1]= new TcpProtocolEncoder2();
+						ProtocolConstant.DEFAULT_TCP_CODEC=cr;
+					}
+					ChannelHandler[] crr=ProtocolConstant.DEFAULT_TCP_CODEC;
+					b.group(bossGroup, workerGroup)
+							.option(ChannelOption.TCP_NODELAY, true)
+							.option(ChannelOption.SO_KEEPALIVE, true)
+							.channel(NioServerSocketChannel.class)
+							.childHandler(new TcpServerInitializer(crr[0],crr[1]));
+					ChannelFuture f=b.bind(settings.getPort()).sync();
+					f.channel().closeFuture().sync();
+					logger.info("TCP port="+settings.getPort()+"启动成功！");
 				}
 			}
 		}catch (InterruptedException e) {

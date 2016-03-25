@@ -28,9 +28,12 @@ public class ByteMessageHandler {
         Message dd=msg;
         ByteMessage byteMessage = (ByteMessage)msg;
         short msgId= byteMessage.getId();
+
         int num= byteMessage.readInt();
-        String str= byteMessage.readString();
-        System.out.println(msgId+" "+num+" " +str);
+        double str= byteMessage.readDouble();
+        String drt= byteMessage.readString();
+        float fl=byteMessage.readFloat();
+        System.out.println(msgId+" "+num+" "+str+" " +fl+" "+drt);
         session.send(msg);
         //TODO ...
     }
