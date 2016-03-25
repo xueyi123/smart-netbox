@@ -1,11 +1,8 @@
 package com.iih5.netbox.core;
 
-import com.iih5.netbox.codec.IWebSocketProtocolDecoder;
-import com.iih5.netbox.codec.IWebSocketProtocolEncoder;
-import com.iih5.netbox.codec.TcpProtocolDecoder2;
-import com.iih5.netbox.codec.TcpProtocolEncoder2;
+import com.iih5.netbox.codec.IWebSocketBinaryDecoder;
+import com.iih5.netbox.codec.IWebSocketBinaryEncoder;
 import io.netty.channel.ChannelHandler;
-import io.netty.handler.codec.http.HttpServerCodec;
 
 /**
  * Created by XUEYI on 2016/3/18.
@@ -26,7 +23,7 @@ public class ProtocolConstant {
     public static ChannelHandler DEFAULT_WEB_SOCKET_CODEC = null;
 
 
-    public static IWebSocketProtocolDecoder webSocketProtocolDecoder=null;
+    public static IWebSocketBinaryDecoder webSocketProtocolDecoder=null;
 
-    public static IWebSocketProtocolEncoder webSocketProtocolEncoder=null;
+    public static IWebSocketBinaryEncoder webSocketProtocolEncoder=null;
 }

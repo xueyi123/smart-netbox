@@ -13,14 +13,10 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.iih5.netbox.codec;
+package com.iih5.netbox.websocket;
 
-import com.google.protobuf.Descriptors;
-import com.google.protobuf.DynamicMessage;
-import com.google.protobuf.MessageLite;
 import com.iih5.netbox.NetBoxEngine;
 import com.iih5.netbox.actor.IActor;
-import com.iih5.netbox.annotation.Protocol;
 import com.iih5.netbox.core.*;
 import com.iih5.netbox.message.*;
 import com.iih5.netbox.session.ISession;
@@ -38,7 +34,6 @@ import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
 import org.apache.log4j.Logger;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 

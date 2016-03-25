@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.iih5.netbox.codec;
+package com.iih5.netbox.websocket;
 
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
