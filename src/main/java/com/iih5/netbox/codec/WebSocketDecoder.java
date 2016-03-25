@@ -36,7 +36,6 @@ public class WebSocketDecoder {
         short msgId = content.readShort(); //cmdID
         ByteBuf msgBuf = Unpooled.buffer(content.readableBytes());//content
         content.readBytes(msgBuf);
-
         switch (GlobalConstant.messageType){
             case MessageType.BYTE_TYPE:
                 out.add(new ByteMessage(msgId,msgBuf));
