@@ -1,4 +1,4 @@
-package com.iih5.example.server;/*
+package com.iih5.example.tcpclient;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,
@@ -14,26 +14,25 @@ package com.iih5.example.server;/*
  * under the License.
  */
 
-import com.iih5.netbox.annotation.Protocol;
-import com.iih5.netbox.annotation.Request;
-import com.iih5.netbox.message.ByteMessage;
-import com.iih5.netbox.message.Message;
-import com.iih5.netbox.session.ISession;
+public class TestHandler implements IHandler {
+    public void connect(ISession session) {
+        System.out.println("连接成功");
+    }
 
-@Request
-public class ByteMessageHandler {
-    //注：协议号是不能重复的
-    @Protocol(value=2001)
-    public void test(Message msg, ISession session) throws Exception {
-        Message dd=msg;
-        ByteMessage byteMessage = (ByteMessage)msg;
-        short msgId= byteMessage.getId();
+    public void connectFailure(ISession session) {
+        System.out.println("连接失败");
+    }
+
+    public void disConnect(ISession session) {
+        System.out.println("断开连接");
+    }
+
+    public void receive(ISession session, Message message) {
+        ByteMessage byteMessage = (ByteMessage)message;
         int num= byteMessage.readInt();
         double str= byteMessage.readDouble();
-        String drt= byteMessage.readString();
+        String drt= byteMessage.readUTF8();
         float fl=byteMessage.readFloat();
-        System.out.println(msgId+" "+num+" "+str+" " +fl+" "+drt);
-        session.send(msg);
-        //TODO ...
+        System.out.println("客户端：收到数据:"+ message.getId()+" "+byteMessage.readInt()+" "+num+" "+str+" "+drt+" "+fl);
     }
 }

@@ -15,14 +15,17 @@
  */
 package com.iih5.netbox;
 
-
+import com.iih5.netbox.codec.tcp.TcpDecoder;
+import com.iih5.netbox.codec.tcp.TcpEncoder;
+import com.iih5.netbox.codec.ws.WsBinaryDecoder;
+import com.iih5.netbox.codec.ws.WsBinaryEncoder;
+import com.iih5.netbox.codec.ws.WsTextDecoder;
+import com.iih5.netbox.codec.ws.WsTextEncoder;
 import com.iih5.netbox.core.GlobalConstant;
-import com.iih5.netbox.core.MessageType;
 import com.iih5.netbox.core.ProtocolConstant;
 import com.iih5.netbox.core.TransformType;
-import com.iih5.netbox.message.Message;
-import io.netty.channel.ChannelHandler;
-import io.netty.handler.codec.http.HttpServerCodec;
+
+import javax.naming.OperationNotSupportedException;
 
 public class NetBoxEngineSetting {
 	/**默认端口*/
@@ -40,6 +43,10 @@ public class NetBoxEngineSetting {
         return port;
     }
 
+    /**
+     * 设置端口
+     * @param port
+     */
     public void setPort(int port) {
         this.port = port;
     }
@@ -48,6 +55,10 @@ public class NetBoxEngineSetting {
         return bossThreadSize;
     }
 
+    /**
+     * 设置监听线程数量
+     * @param bossThreadSize
+     */
     public void setBossThreadSize(int bossThreadSize) {
         this.bossThreadSize = bossThreadSize;
     }
@@ -56,6 +67,10 @@ public class NetBoxEngineSetting {
         return workerThreadSize;
     }
 
+    /**
+     * 设置框架工作线程数量
+     * @param workerThreadSize
+     */
     public void setWorkerThreadSize(int workerThreadSize) {
         this.workerThreadSize = workerThreadSize;
     }
@@ -64,18 +79,22 @@ public class NetBoxEngineSetting {
         return basePackage;
     }
 
+    /**
+     * 设置注解扫描路径
+     * @param basePackage
+     */
     public void setBasePackage(String basePackage) {
         this.basePackage = basePackage;
-    }
-
-    public void setMessageType(int messageType) {
-        GlobalConstant.messageType =messageType;
     }
 
     public int getPlayerThreadSize() {
         return playerThreadSize;
     }
 
+    /**
+     *设置用户操作线程数
+     * @param playerThreadSize
+     */
     public void setPlayerThreadSize(int playerThreadSize) {
         this.playerThreadSize = playerThreadSize;
     }
@@ -83,22 +102,35 @@ public class NetBoxEngineSetting {
     public boolean isDebug() {
         return GlobalConstant.debug;
     }
+
+    /**
+     * 设置调试模式，true为调试模式
+     * @param debug
+     */
     public void setDebug(boolean debug) {
         GlobalConstant.debug = debug;
     }
 
     /**
-     * 设置编码/解码，不设置则这采用默认 ProtocolDecoder2/ProtocolEncoder2
-     * @param codec 编码/解码
+     * 设置编码/解码，不设置则这采用默认TCP的 ProtocolDecoder2/ProtocolEncoder2
+     * @param encode 编码
      */
-    public void setProtocolCoder(ChannelHandler ...codec){
-        ChannelHandler[] c=codec;
-        if (c.length==1&& c[0] instanceof HttpServerCodec){
-            GlobalConstant.transformType=TransformType.WEB_SOCKET;
-        }else{
-            GlobalConstant.transformType=TransformType.TCP;
-            ProtocolConstant.DEFAULT_TCP_CODEC=codec;
+    public void setProtocolCoder(Object encode,Object decode) throws Exception {
+        if (encode instanceof TcpEncoder && decode instanceof TcpDecoder){
+            ProtocolConstant.transformType=TransformType.TCP;
+            ProtocolConstant.tcpEncoder=(TcpEncoder) encode;
+            ProtocolConstant.tcpDecoder=(TcpDecoder) decode;
+        }else if(encode instanceof WsTextEncoder && decode instanceof WsTextDecoder){
+            ProtocolConstant.transformType=TransformType.WS_TEXT;
+            ProtocolConstant.wsTextEncoder=(WsTextEncoder)encode;
+            ProtocolConstant.wsTextDecoder=(WsTextDecoder)decode;
+        }else if (encode instanceof WsBinaryEncoder && decode instanceof WsBinaryDecoder){
+            ProtocolConstant.transformType=TransformType.WS_BINARY;
+            ProtocolConstant.wsBinaryEncoder=(WsBinaryEncoder)encode;
+            ProtocolConstant.wsBinaryDecoder=(WsBinaryDecoder)decode;
+        }else {
+           throw new OperationNotSupportedException("设置编码/解码错误");
         }
-
     }
+
 }

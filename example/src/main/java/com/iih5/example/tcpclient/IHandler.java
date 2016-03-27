@@ -1,4 +1,4 @@
-/*
+package com.iih5.example.tcpclient;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,
@@ -13,13 +13,10 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.iih5.netbox.core;
 
-public class TransformType {
-	/**TCP传输*/
-	public static int TCP=1;
-	/**WebSocket文本传输*/
-	public static int WS_TEXT=2;
-	/**WebSocket二进制传输*/
-	public static int WS_BINARY=3;
+public interface IHandler {
+    void connect(ISession session);
+    void connectFailure(ISession session);
+    void disConnect(ISession session);
+    void receive(ISession session, Message message);
 }

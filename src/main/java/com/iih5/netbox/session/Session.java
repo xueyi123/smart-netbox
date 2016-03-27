@@ -16,8 +16,6 @@
 package com.iih5.netbox.session;
 
 import com.iih5.netbox.actor.IActor;
-import com.iih5.netbox.core.GlobalConstant;
-import com.iih5.netbox.core.MessageType;
 import com.iih5.netbox.core.ProtocolConstant;
 import com.iih5.netbox.core.TransformType;
 import com.iih5.netbox.message.Message;
@@ -117,23 +115,22 @@ public class Session implements ISession {
      */
 	public void send(Message msg) {
 		if (channel!=null) {
-			if (GlobalConstant.transformType== TransformType.TCP) {
+			if (ProtocolConstant.transformType == TransformType.TCP) {
 				msg.resetReaderIndex();
 				channel.writeAndFlush(msg);
-			}else {
+			}else if (ProtocolConstant.transformType == TransformType.WS_BINARY){
 				ByteBuf byteBuf= Unpooled.buffer(512);
-				ProtocolConstant.webSocketProtocolEncoder.encode(channel,msg,byteBuf);
+				ProtocolConstant.wsBinaryEncoder.encode(channel,msg,byteBuf);
 				channel.writeAndFlush(new BinaryWebSocketFrame(byteBuf));
+			}else if (ProtocolConstant.transformType == TransformType.WS_TEXT){
+				StringBuffer text = new StringBuffer();
+				ProtocolConstant.wsTextEncoder.encode(channel,msg,text);
+				channel.writeAndFlush(new TextWebSocketFrame(text.toString()));
+			}else {
+				msg.resetReaderIndex();
+				channel.writeAndFlush(msg);
 			}
 		}
 	}
-	/***
-	 * 发送websocket text传输
-	 * @param msg 内容
-     */
-	public void sendText(String msg){
-		if (channel!=null){
-			channel.writeAndFlush(msg);
-		}
-	}
+
 }

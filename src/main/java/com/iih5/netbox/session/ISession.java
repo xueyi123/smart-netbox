@@ -46,11 +46,7 @@ public interface ISession {
      * @param msg
      */
     public void send(Message msg);
-    /***
-     * 发送websocket text传输
-     * @param msg 内容
-     */
-    public void sendText(String msg);
+
     /**
      * 设置参数
      * @param key

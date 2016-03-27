@@ -16,10 +16,7 @@
 package com.iih5.netbox.core;
 
 public class GlobalConstant {
-    /**传输协类型*/
-	public static int transformType= TransformType.TCP;
-	/**数据格式类型*/
-	public static  int messageType= MessageType.BYTE_TYPE;
+
 	/**设置服务运行模式*/
 	public static boolean debug=false;
 

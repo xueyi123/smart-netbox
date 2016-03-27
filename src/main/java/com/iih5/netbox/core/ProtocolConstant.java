@@ -1,29 +1,35 @@
 package com.iih5.netbox.core;
 
-import com.iih5.netbox.codec.IWebSocketBinaryDecoder;
-import com.iih5.netbox.codec.IWebSocketBinaryEncoder;
-import io.netty.channel.ChannelHandler;
+import com.iih5.netbox.codec.tcp.TcpDecoder;
+import com.iih5.netbox.codec.tcp.TcpEncoder;
+import com.iih5.netbox.codec.tcp.TcpForDefaultByteDecoder;
+import com.iih5.netbox.codec.tcp.TcpForDefaultByteEncoder;
+import com.iih5.netbox.codec.ws.WsBinaryDecoder;
+import com.iih5.netbox.codec.ws.WsBinaryEncoder;
+import com.iih5.netbox.codec.ws.WsTextDecoder;
+import com.iih5.netbox.codec.ws.WsTextEncoder;
 
 /**
  * Created by XUEYI on 2016/3/18.
  */
 public class ProtocolConstant {
-    /**
-     * 协议数据包头默认值 0x2B    ...(^O^)
-     */
+
+    /**传输协类型*/
+    public static int transformType= TransformType.TCP;
+
+    //协议数据包头默认值 0x2B    ...(^O^)
     public static byte PACK_HEAD_FLAG=0x2B;
-    /**
-     * 默认TCP编码/解密方式
-     */
-    public static ChannelHandler DEFAULT_TCP_CODEC[] = null;
 
-    /**
-     * 默认WebSocket编码/解密方式
-     */
-    public static ChannelHandler DEFAULT_WEB_SOCKET_CODEC = null;
+    //TCP编码/解密
+    public static TcpEncoder tcpEncoder = new TcpForDefaultByteEncoder();
+    public static TcpDecoder tcpDecoder = new TcpForDefaultByteDecoder();
 
+    //WebSocket Text传输的编码/解码
+    public static WsTextEncoder wsTextEncoder=null;
+    public static WsTextDecoder wsTextDecoder=null;
 
-    public static IWebSocketBinaryDecoder webSocketProtocolDecoder=null;
+    //WebSocket Binary传输的编码/解码
+    public static WsBinaryEncoder wsBinaryEncoder=null;
+    public static WsBinaryDecoder wsBinaryDecoder=null;
 
-    public static IWebSocketBinaryEncoder webSocketProtocolEncoder=null;
 }

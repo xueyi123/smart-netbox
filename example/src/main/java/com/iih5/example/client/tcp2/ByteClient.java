@@ -66,6 +66,7 @@ public class ByteClient {
         dis.writeInt(packLen);
         dis.writeShort(msgId);
         dis.write(buf);
+        //dis.flush();//
     }
 
     public static void  receiv(Socket socket) throws IOException {

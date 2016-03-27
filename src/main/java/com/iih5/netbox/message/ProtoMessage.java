@@ -27,10 +27,8 @@ public class ProtoMessage extends Message{
     public ProtoMessage(short id) {
         super(id);
     }
-
-    public ProtoMessage(short id,byte[] message) {
-        super(id);
-        this.message=message;
+    public void setContent(byte[] content){
+        this.message=content;
     }
     public ProtoMessage(short id,AbstractMessageLite.Builder<?> builder) {
         super(id);

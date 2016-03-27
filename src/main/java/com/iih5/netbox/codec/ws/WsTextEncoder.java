@@ -1,4 +1,4 @@
-/*
+package com.iih5.netbox.codec.ws;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,
@@ -13,21 +13,11 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.iih5.example.client.tcp.jsonclient;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 
-import com.iih5.netbox.core.GlobalConstant;
-import com.iih5.netbox.core.MessageType;
-import com.iih5.netbox.core.ProtocolConstant;
-import com.iih5.netbox.core.TcpCodecType;
-
-public class Startup {
-	public static JsonClient client;
-	public static void main(String[] args) {
-		System.err.println("---------------TCP测试---------------");
-		client = new JsonClient();
-		client.setMessageType(MessageType.JSON_TYPE);
-		GlobalConstant.debug=true;
-		client.connect("127.0.0.1", 9230);
-	}
+public abstract class WsTextEncoder {
+    public abstract void encode(Channel ctx, Object msg, StringBuffer text);
 }

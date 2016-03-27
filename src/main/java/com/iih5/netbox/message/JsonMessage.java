@@ -25,23 +25,10 @@ public class JsonMessage extends Message {
         super(id);
     }
 
-    /**
-     * 传入字符串
-     * @param id
-     * @param content
-     */
-    public JsonMessage(short id,String content) {
-        super(id);
+    public void setContent(String content){
         this.content=content;
     }
-
-    /**
-     * 直接传入json对象
-     * @param id
-     * @param json
-     */
-    public JsonMessage(short id,Object json) {
-        super(id);
+    public void setContent(Object json){
         this.content=JSON.toJSONString(json);
     }
     public <T> T parseObject(Class<T> clazz) {

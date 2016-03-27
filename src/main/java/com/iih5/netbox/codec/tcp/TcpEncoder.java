@@ -1,4 +1,4 @@
-/*
+package com.iih5.netbox.codec.tcp;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,
@@ -13,17 +13,8 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.iih5.example.client.tcp.byteclient;
 
+import io.netty.handler.codec.MessageToByteEncoder;
 
-import com.iih5.netbox.core.MessageType;
-
-public class Startup {
-	public static ByteClient client;
-	public static void main(String[] args) {
-		System.err.println("---------------TCP测试---------------");
-		client = new ByteClient();
-		client.setMessageType(MessageType.BYTE_TYPE);
-		client.connect("127.0.0.1", 9230);
-	}
+public abstract class TcpEncoder  extends MessageToByteEncoder<Object> {
 }

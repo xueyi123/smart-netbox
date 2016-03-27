@@ -25,10 +25,10 @@ public class ByteMessage extends Message{
     public ByteMessage(short id) {
         super(id);
     }
-    public ByteMessage(short id,ByteBuf buf) {
-        super(id);
+      public void setContent(ByteBuf buf){
         this.buf=buf;
     }
+
     public byte readByte() {
         return buf.readByte();
     }

@@ -1,4 +1,4 @@
-/*
+package com.iih5.example.tcpclient;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,
@@ -13,17 +13,22 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.iih5.example.client.tcp.stringclient;
 
+import com.iih5.netbox.session.*;
 
-import com.iih5.netbox.core.MessageType;
+import java.io.IOException;
 
-public class Startup {
-	public static StringClient client;
-	public static void main(String[] args) {
-		System.err.println("---------------TCP测试---------------");
-		client = new StringClient();
-		client.setMessageType(MessageType.STRING_TYPE);
-		client.connect("127.0.0.1", 9230);
-	}
+public class Session implements ISession {
+    private Client _client;
+    public Session(Client client)
+    {
+        _client = client;
+    }
+    public Client getNetboxClient()
+    {
+        return _client;
+    }
+    public void send(Message msg) throws IOException {
+        _client.send(msg);
+    }
 }

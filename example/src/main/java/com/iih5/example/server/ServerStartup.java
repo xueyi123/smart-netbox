@@ -18,22 +18,20 @@ package com.iih5.example.server;
 
 import com.iih5.netbox.NetBoxEngine;
 import com.iih5.netbox.NetBoxEngineSetting;
-import com.iih5.netbox.codec.TcpProtocolDecoder;
-import com.iih5.netbox.codec.TcpProtocolEncoder;
-import com.iih5.netbox.core.MessageType;
-import com.iih5.netbox.core.TcpCodecType;
-import com.iih5.netbox.core.TransformType;
-import io.netty.handler.codec.protobuf.ProtobufDecoder;
-import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import com.iih5.netbox.codec.tcp.TcpForDefaultByteDecoder;
+import com.iih5.netbox.codec.tcp.TcpForDefaultByteEncoder;
+import com.iih5.netbox.codec.tcp.TcpForDefaultProtoEncoder;
+import com.iih5.netbox.codec.ws.WsBinaryForDefaultByteDecoder;
+import com.iih5.netbox.codec.ws.WsBinaryForDefaultByteEncoder;
+import org.apache.log4j.Logger;
 
 public class ServerStartup {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		System.out.println("服务端启动");
 		NetBoxEngineSetting setting  = new NetBoxEngineSetting();
 		setting.setBasePackage("com.iih5.example.server");//handler所在目录
 		setting.setPort(9230);
-		setting.setMessageType(MessageType.BYTE_TYPE);//不同的数据类型，需要要记得指定
-		setting.setProtocolCoder(new TcpProtocolEncoder(),new TcpProtocolDecoder());
+		setting.setProtocolCoder(new TcpForDefaultByteEncoder(),new TcpForDefaultByteDecoder());
 		setting.setDebug(true);
 		NetBoxEngine boxEngine = new NetBoxEngine();
 		boxEngine.setSettings(setting);

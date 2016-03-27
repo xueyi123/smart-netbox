@@ -1,4 +1,4 @@
-/*
+package com.iih5.netbox.codec.ws;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,
@@ -13,17 +13,12 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.iih5.example.client.tcp.protoclient;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 
-import com.iih5.netbox.core.MessageType;
+import java.util.List;
 
-public class Startup {
-	public static ProtoClient client;
-	public static void main(String[] args) {
-		System.err.println("---------------TCP测试---------------");
-		client = new ProtoClient();
-		client.setMessageType(MessageType.PROTO_TYPE);
-		client.connect("127.0.0.1", 9230);
-	}
+public abstract class WsBinaryDecoder {
+    public abstract void decode(Channel ctx, ByteBuf buffer, List<Object> out);
 }

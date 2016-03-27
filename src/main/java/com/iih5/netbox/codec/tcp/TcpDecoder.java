@@ -1,7 +1,7 @@
-package com.iih5.netbox.core;/*
+package com.iih5.netbox.codec.tcp;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
- * The Smart-NetBox Project licenses this file to you under the Apache License,
+ * The SmartORM Project licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at:
  *
@@ -14,18 +14,7 @@ package com.iih5.netbox.core;/*
  * under the License.
  */
 
-public class MessageType {
+import io.netty.handler.codec.ByteToMessageDecoder;
 
-    /**google proto buffer 数据类型*/
-    public static final  int PROTO_TYPE        =1;
-
-    /**基本二进制数据类型*/
-    public static final  int BYTE_TYPE         =2;
-
-    /**基本字符串数据类型*/
-    public static final  int STRING_TYPE       =3;
-
-    /**json数据类型*/
-    public static final  int JSON_TYPE         =4;
-
+public abstract class TcpDecoder extends ByteToMessageDecoder {
 }

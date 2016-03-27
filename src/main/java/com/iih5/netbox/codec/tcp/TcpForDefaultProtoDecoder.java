@@ -13,22 +13,19 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.iih5.netbox.codec;
+package com.iih5.netbox.codec.tcp;
 
 import com.iih5.netbox.core.GlobalConstant;
-import com.iih5.netbox.core.MessageType;
 import com.iih5.netbox.core.ProtocolConstant;
-import com.iih5.netbox.message.*;
+import com.iih5.netbox.message.ProtoMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.ByteToMessageDecoder;
 import org.apache.log4j.Logger;
 
-import java.nio.charset.Charset;
 import java.util.List;
 
-public class TcpProtocolDecoder2 extends ByteToMessageDecoder{
+public class TcpForDefaultProtoDecoder extends TcpDecoder {
 	/**
 	 ** 包格式：包头(byte=1)+包长度(int=4)+消息码(short=2)+加密段(byte=1)+数据段(byte[])
 	 1）包头        :表示数据包合法性
@@ -39,7 +36,7 @@ public class TcpProtocolDecoder2 extends ByteToMessageDecoder{
 	 */
 	//包头7个字节
 	private final static int HEAD_SIZE =7;
-	private Logger logger = Logger.getLogger(TcpProtocolDecoder2.class);
+	private Logger logger = Logger.getLogger(TcpForDefaultProtoDecoder.class);
 	protected void decode(ChannelHandlerContext ctx, ByteBuf buffer,List<Object> out) throws Exception {
 		if (GlobalConstant.debug){
 			logger.info("收到数据《《 size:"+buffer.readableBytes());
@@ -56,6 +53,7 @@ public class TcpProtocolDecoder2 extends ByteToMessageDecoder{
 				logger.error("连接被断开，检测到您包头标识错误:"+header_name+",正确包头应为:"+ProtocolConstant.PACK_HEAD_FLAG);
 			}
 			buffer.clear();//非法数据清除
+			System.out.println("包头标识错误!");
 			ctx.channel().disconnect().channel().close();
 		}
 		//【2】包长度判断，判断数据包长度是否达到基本长度，小于意味数据不完整则不处理，复位，等待下次数据到来时处理
@@ -80,33 +78,11 @@ public class TcpProtocolDecoder2 extends ByteToMessageDecoder{
 			logger.info("接收完整包数据信息《《 packSize:"+packSize+" msgId:"+msgId+" encr:"+encr+" data size="+dataSize);
 		}
 		// 数据对象组装
-		Message message=null;
 		ByteBuf b = Unpooled.buffer(dataSize);
-		switch (GlobalConstant.messageType) {
-			case MessageType.BYTE_TYPE:
-				buffer.readBytes(b);
-				message=new ByteMessage(msgId,b);
-				message.setEncryptType(encr);
-				out.add(message);
-				break;
-			case MessageType.JSON_TYPE:
-				buffer.readBytes(b);
-				message=new JsonMessage(msgId,new String(b.array(),Charset.forName("UTF-8")));
-				message.setEncryptType(encr);
-				out.add(message);
-				break;
-			case MessageType.PROTO_TYPE:
-				buffer.readBytes(b);
-				message=new ProtoMessage(msgId,b.array());
-				message.setEncryptType(encr);
-				out.add(message);
-				break;
-			case MessageType.STRING_TYPE:
-				buffer.readBytes(b);
-				message= new StringMessage(msgId,new String(b.array(),Charset.forName("UTF-8")));
-				message.setEncryptType(encr);
-				out.add(message);
-				break;
-		}
+		buffer.readBytes(b);
+		ProtoMessage message=new ProtoMessage(msgId);
+		message.setEncryptType(encr);
+		message.setContent(b.array());
+		out.add(message);
 	}
 }

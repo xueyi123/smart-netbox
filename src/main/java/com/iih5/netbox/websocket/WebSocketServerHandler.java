@@ -17,8 +17,10 @@ package com.iih5.netbox.websocket;
 
 import com.iih5.netbox.NetBoxEngine;
 import com.iih5.netbox.actor.IActor;
-import com.iih5.netbox.core.*;
-import com.iih5.netbox.message.*;
+import com.iih5.netbox.core.AnnObject;
+import com.iih5.netbox.core.CmdHandlerCache;
+import com.iih5.netbox.core.ProtocolConstant;
+import com.iih5.netbox.message.Message;
 import com.iih5.netbox.session.ISession;
 import com.iih5.netbox.session.Session;
 import com.iih5.netbox.session.SessionManager;
@@ -142,7 +144,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         String location = req.headers().get(HOST) + WEBSOCKET_PATH;
         return "ws://" + location;
     }
-    Message message=null;
     private void handleWebSocketFrame(ChannelHandlerContext ctx, WebSocketFrame frame) throws Exception {
 
         if (frame instanceof CloseWebSocketFrame) {
@@ -160,9 +161,9 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         if (frame instanceof BinaryWebSocketFrame) {
             BinaryWebSocketFrame bw = (BinaryWebSocketFrame) frame;
             ByteBuf content = bw.content();
-            List<Object> mlist = new ArrayList<Object>(1);
-            ProtocolConstant.webSocketProtocolDecoder.decode(ctx.channel(),content,mlist);
-            final Message message = (Message) mlist.get(0);
+            List<Object> list = new ArrayList<Object>(1);
+            ProtocolConstant.wsBinaryDecoder.decode(ctx.channel(),content,list);
+            final Message message = (Message) list.get(0);
             final Channel channel = ctx.channel();
             final AnnObject cmdHandler = CmdHandlerCache.getInstance().getAnnObject(message.getId());
             final ISession session = SessionManager.getInstance().getSession(channel);
@@ -183,49 +184,10 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
             return;
         }
         if (frame instanceof TextWebSocketFrame) {
-            /**
-             ** 包格式：包头(byte=1)+包长度(int=4)+消息码(short=2)+加密段(byte=1)+数据段(byte[])
-             1）包头        :表示数据包合法性
-             2）包长度      :表示整个数据的长度(包含用于表示长度本身的字节)
-             3）消息码      :表示数据包类型
-             4）加密段      :表示数据段是否加密,采用什么加密算法
-             5）数据段      :采用byte[]形式存放
-             */
-            //text协议定义: "headFlag#packSize#id#encr#content",比如 0#0#10001#0#hello world!
             String request = ((TextWebSocketFrame) frame).text();
-            String complex[];
-            byte headFlag=0;
-            int packSize=0;
-            short msgId = 0;
-            byte encr=0;
-            String content = "";
-            try {
-                complex = request.split("#", 5);
-                headFlag= Byte.valueOf(complex[0]);
-                packSize=Integer.valueOf(complex[1]);
-                msgId = Short.valueOf(complex[2]);
-                encr=Byte.valueOf(complex[3]);
-                content = complex[4];
-            } catch (Exception e) {
-                logger.error("协议格式不符合，正确的协议定义: headFlag#packSize#id#encr#content,比如 0#0#10001#0#hello world!");
-                throw new UnsupportedOperationException("协议格式不符合，正确的协议定义:headFlag#packSize#id#encr#content,比如 0#0#10001#0#hello world!");
-            }
-            switch (GlobalConstant.messageType){
-                case MessageType.JSON_TYPE:
-                    message = new JsonMessage(msgId,content);
-                    message.setEncryptType(encr);
-                    break;
-                case MessageType.STRING_TYPE:
-                    message = new StringMessage(msgId,content);
-                    message.setEncryptType(encr);
-                    break;
-                default:
-                    logger.error("数据协议定义仅限制于JSON_TYPE 和STRING_TYPE");
-                    throw new UnsupportedOperationException("数据协议定义仅限制于JSON_TYPE 和STRING_TYPE");
-            }
-            if (GlobalConstant.debug){
-                logger.info("接收完整包数据信息《《 :"+request);
-            }
+            List<Object> list = new ArrayList<Object>(1);
+            ProtocolConstant.wsTextDecoder.decode(ctx.channel(),request,list);
+            final Message message = (Message) list.get(0);
             final Channel channel = ctx.channel();
             final AnnObject cmdHandler = CmdHandlerCache.getInstance().getAnnObject(message.getId());
             final ISession session = SessionManager.getInstance().getSession(channel);

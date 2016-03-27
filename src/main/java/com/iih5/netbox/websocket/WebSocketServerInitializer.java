@@ -15,7 +15,6 @@
  */
 package com.iih5.netbox.websocket;
 
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -23,13 +22,10 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 
 public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel> {
-    public  ChannelHandler codec=new HttpServerCodec();
-    public WebSocketServerInitializer(ChannelHandler codec){
-        this.codec=codec;
-    }
+
     public void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
-        pipeline.addLast(codec);
+        pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new HttpObjectAggregator(65536));
         pipeline.addLast(new WebSocketServerHandler());
     }
