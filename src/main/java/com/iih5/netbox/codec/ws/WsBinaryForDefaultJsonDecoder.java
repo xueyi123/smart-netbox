@@ -41,9 +41,9 @@ public class WsBinaryForDefaultJsonDecoder extends WsBinaryDecoder{
         byte encr=buffer.readByte(); //encr
         ByteBuf msgBuf = Unpooled.buffer(buffer.readableBytes());//content
         buffer.readBytes(msgBuf);
-        JsonMessage byteMessage = new JsonMessage(msgId);
-        byteMessage.setEncryptType(encr);
-        byteMessage.setContent(msgBuf);
-
+        JsonMessage m = new JsonMessage(msgId);
+        m.setEncryptType(encr);
+        m.setContent(msgBuf);
+        out.add(m);
     }
 }

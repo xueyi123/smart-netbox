@@ -17,6 +17,9 @@ package com.iih5.netbox.websocket;
 
 import com.iih5.netbox.NetBoxEngine;
 import com.iih5.netbox.actor.IActor;
+import com.iih5.netbox.annotation.Protocol;
+import com.iih5.netbox.codec.ws.WsBinaryDecoder;
+import com.iih5.netbox.codec.ws.WsTextDecoder;
 import com.iih5.netbox.core.AnnObject;
 import com.iih5.netbox.core.CmdHandlerCache;
 import com.iih5.netbox.core.ProtocolConstant;
@@ -36,6 +39,7 @@ import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
 import org.apache.log4j.Logger;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,7 +166,11 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
             BinaryWebSocketFrame bw = (BinaryWebSocketFrame) frame;
             ByteBuf content = bw.content();
             List<Object> list = new ArrayList<Object>(1);
-            ProtocolConstant.wsBinaryDecoder.decode(ctx.channel(),content,list);
+
+            WsBinaryDecoder decoder= (WsBinaryDecoder) ProtocolConstant.wsBinaryDecoder.getClass().newInstance();
+            Method method =decoder.getClass().getMethod("decode",Channel.class,ByteBuf.class,List.class);
+            method.invoke(decoder,ctx.channel(),content,list);
+
             final Message message = (Message) list.get(0);
             final Channel channel = ctx.channel();
             final AnnObject cmdHandler = CmdHandlerCache.getInstance().getAnnObject(message.getId());
@@ -186,7 +194,11 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         if (frame instanceof TextWebSocketFrame) {
             String request = ((TextWebSocketFrame) frame).text();
             List<Object> list = new ArrayList<Object>(1);
-            ProtocolConstant.wsTextDecoder.decode(ctx.channel(),request,list);
+
+            WsTextDecoder decoder= (WsTextDecoder) ProtocolConstant.wsTextDecoder.getClass().newInstance();
+            Method method =decoder.getClass().getMethod("decode",Channel.class,String.class,List.class);
+            method.invoke(decoder,ctx.channel(),request,list);
+
             final Message message = (Message) list.get(0);
             final Channel channel = ctx.channel();
             final AnnObject cmdHandler = CmdHandlerCache.getInstance().getAnnObject(message.getId());

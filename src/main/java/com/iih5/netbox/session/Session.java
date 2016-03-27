@@ -16,6 +16,9 @@
 package com.iih5.netbox.session;
 
 import com.iih5.netbox.actor.IActor;
+import com.iih5.netbox.codec.ws.WsBinaryDecoder;
+import com.iih5.netbox.codec.ws.WsBinaryEncoder;
+import com.iih5.netbox.codec.ws.WsTextEncoder;
 import com.iih5.netbox.core.ProtocolConstant;
 import com.iih5.netbox.core.TransformType;
 import com.iih5.netbox.message.Message;
@@ -25,7 +28,9 @@ import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
+import java.lang.reflect.Method;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -113,19 +118,31 @@ public class Session implements ISession {
 	 * 发送tcp/websocket binary传输
 	 * @param msg
      */
-	public void send(Message msg) {
+	public void send(Message msg){
 		if (channel!=null) {
 			if (ProtocolConstant.transformType == TransformType.TCP) {
 				msg.resetReaderIndex();
 				channel.writeAndFlush(msg);
 			}else if (ProtocolConstant.transformType == TransformType.WS_BINARY){
-				ByteBuf byteBuf= Unpooled.buffer(512);
-				ProtocolConstant.wsBinaryEncoder.encode(channel,msg,byteBuf);
-				channel.writeAndFlush(new BinaryWebSocketFrame(byteBuf));
+				try{
+					ByteBuf byteBuf= Unpooled.buffer(512);
+					WsBinaryEncoder decoder= (WsBinaryEncoder) ProtocolConstant.wsBinaryEncoder.getClass().newInstance();
+					Method method =decoder.getClass().getMethod("encode",Channel.class,Object.class,ByteBuf.class);
+					method.invoke(decoder,channel,msg,byteBuf);
+					channel.writeAndFlush(new BinaryWebSocketFrame(byteBuf));
+				}catch (Exception e){
+					e.printStackTrace();
+				}
 			}else if (ProtocolConstant.transformType == TransformType.WS_TEXT){
-				StringBuffer text = new StringBuffer();
-				ProtocolConstant.wsTextEncoder.encode(channel,msg,text);
-				channel.writeAndFlush(new TextWebSocketFrame(text.toString()));
+				try{
+					StringBuffer text = new StringBuffer();
+					WsTextEncoder decoder= (WsTextEncoder) ProtocolConstant.wsTextEncoder.getClass().newInstance();
+					Method method =decoder.getClass().getMethod("encode",Channel.class,Object.class,String.class);
+					method.invoke(decoder,channel,msg,text);
+					channel.writeAndFlush(new TextWebSocketFrame(text.toString()));
+				}catch (Exception e){
+					//
+				}
 			}else {
 				msg.resetReaderIndex();
 				channel.writeAndFlush(msg);

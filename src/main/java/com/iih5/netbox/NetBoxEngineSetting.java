@@ -128,6 +128,7 @@ public class NetBoxEngineSetting {
             ProtocolConstant.transformType=TransformType.WS_BINARY;
             ProtocolConstant.wsBinaryEncoder=(WsBinaryEncoder)encode;
             ProtocolConstant.wsBinaryDecoder=(WsBinaryDecoder)decode;
+
         }else {
            throw new OperationNotSupportedException("设置编码/解码错误");
         }

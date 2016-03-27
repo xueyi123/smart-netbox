@@ -66,8 +66,10 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
             //binary测试
             for (int i = 0; i < 10; i++) {
                 ByteBuf byteBuf =Unpooled.buffer();
-                byteBuf.writeInt(3423001);
+                byteBuf.writeInt(3000008);
+                byteBuf.writeDouble(1001);
                 writeString("| hello world |",byteBuf);
+                byteBuf.writeFloat(888.05f);
                 sendBinary((short) 2001,byteBuf,ch);
             }
             return;
@@ -94,18 +96,14 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
         //数据格式：msgId#text
         ch.writeAndFlush(new TextWebSocketFrame(msgId+"#"+str));
     }
-    //包字节长度,占用4个字节
-    private final static int PACK_LEN = 4;
-    //消息类型,占用2个字节
-    private final static int TYPE_LEN = 2;
-    //包头6个字节
-    private final static int HEAD_SIZE =PACK_LEN+TYPE_LEN;
     public  void sendBinary(short msgId, ByteBuf buf, Channel ch){
         //包格式：包长度(int)+消息码(short)+数据段(byte[])
-        int len=buf.array().length+HEAD_SIZE;
+        int len=buf.array().length+7;
         ByteBuf byteBuf= Unpooled.buffer(len);
+        byteBuf.writeByte(43);
         byteBuf.writeInt(len);
         byteBuf.writeShort(msgId);
+        byteBuf.writeByte(0);
         byteBuf.writeBytes(buf);
         ch.writeAndFlush(new BinaryWebSocketFrame(byteBuf));
     }

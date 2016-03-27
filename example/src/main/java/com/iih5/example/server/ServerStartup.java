@@ -23,6 +23,8 @@ import com.iih5.netbox.codec.tcp.TcpForDefaultByteEncoder;
 import com.iih5.netbox.codec.tcp.TcpForDefaultProtoEncoder;
 import com.iih5.netbox.codec.ws.WsBinaryForDefaultByteDecoder;
 import com.iih5.netbox.codec.ws.WsBinaryForDefaultByteEncoder;
+import com.iih5.netbox.codec.ws.WsTextForDefaultJsonDecoder;
+import com.iih5.netbox.codec.ws.WsTextForDefaultJsonEncoder;
 import org.apache.log4j.Logger;
 
 public class ServerStartup {
@@ -31,7 +33,7 @@ public class ServerStartup {
 		NetBoxEngineSetting setting  = new NetBoxEngineSetting();
 		setting.setBasePackage("com.iih5.example.server");//handler所在目录
 		setting.setPort(9230);
-		setting.setProtocolCoder(new TcpForDefaultByteEncoder(),new TcpForDefaultByteDecoder());
+		setting.setProtocolCoder(new WsBinaryForDefaultByteEncoder(),new WsBinaryForDefaultByteDecoder());
 		setting.setDebug(true);
 		NetBoxEngine boxEngine = new NetBoxEngine();
 		boxEngine.setSettings(setting);
