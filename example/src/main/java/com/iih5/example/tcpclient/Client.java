@@ -66,7 +66,6 @@ public class Client {
             DataOutputStream  dis = new DataOutputStream(_socket.getOutputStream());
             byte[] dataBytes = message.toArray();
             int packLen = 7 + dataBytes.length;
-
             dis.writeByte((byte) 43);        //【header=1byte】
             dis.writeInt(packLen);           //【len   =4byte】
             dis.writeShort(message.getId()); //【msgId =2byte】
