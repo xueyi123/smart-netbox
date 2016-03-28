@@ -92,6 +92,7 @@ public class NetBoxEngine {
 		}catch (InterruptedException e) {
 			logger.error("服务器关闭 shutdown！");
 			workerGroup.shutdownGracefully();
+
 			bossGroup.shutdownGracefully();
 		}
 	}
