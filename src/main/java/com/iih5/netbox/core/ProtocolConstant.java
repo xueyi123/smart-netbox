@@ -17,8 +17,8 @@ public class ProtocolConstant {
     /**传输协类型*/
     public static int transformType= TransformType.TCP;
 
-    //协议数据包头默认值 0x2B    ...(^O^)
-    public static byte PACK_HEAD_FLAG=0x2B;
+    //协议数据包头默认值 43   ...(^O^)
+    public static byte PACK_HEAD_FLAG=43;
 
     //TCP编码/解密
     public static TcpEncoder tcpEncoder = new TcpForDefaultByteEncoder();
