@@ -42,7 +42,7 @@ public class WsBinaryForDefaultByteDecoder extends WsBinaryDecoder{
         ByteBuf msgBuf = Unpooled.buffer(buffer.readableBytes());//content
         buffer.readBytes(msgBuf);
         ByteMessage byteMessage = new ByteMessage(msgId);
-        byteMessage.setEncryptType(encr);
+        byteMessage.setEncrypt(encr);
         byteMessage.setContent(msgBuf);
         out.add(byteMessage);
     }

@@ -17,8 +17,8 @@ package com.iih5.example.server;/*
 import com.iih5.example.domain.UserVO;
 import com.iih5.netbox.annotation.Protocol;
 import com.iih5.netbox.annotation.Request;
-import com.iih5.netbox.message.JsonMessage;
 import com.iih5.netbox.message.Message;
+import com.iih5.netbox.message.StringMessage;
 import com.iih5.netbox.session.ISession;
 
 @Request
@@ -27,7 +27,7 @@ public class JsonMessageHandler {
     @Protocol(value=3001)
     public void test(Message msg, ISession session) throws Exception {
         short msgId= msg.getId();
-        JsonMessage jsonMessage =(JsonMessage)msg;
+        StringMessage jsonMessage =(StringMessage)msg;
         UserVO userVO= jsonMessage.parseObject(UserVO.class);
         userVO.getNickName();
         System.out.println(msg.toString());

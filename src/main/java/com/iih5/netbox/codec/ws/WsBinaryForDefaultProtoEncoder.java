@@ -14,9 +14,7 @@ package com.iih5.netbox.codec.ws;/*
  * under the License.
  */
 
-import com.iih5.netbox.codec.ws.WsBinaryEncoder;
 import com.iih5.netbox.core.ProtocolConstant;
-import com.iih5.netbox.message.Message;
 import com.iih5.netbox.message.ProtoMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -24,13 +22,12 @@ import io.netty.channel.Channel;
 public class WsBinaryForDefaultProtoEncoder extends WsBinaryEncoder{
     @Override
     public void encode(Channel ctx, Object message, ByteBuf out) {
-        Message msg = (ProtoMessage) message;
-        msg.resetReaderIndex();
+        ProtoMessage msg = (ProtoMessage) message;
         int len=msg.toArray().length+7;
         out.writeByte(ProtocolConstant.PACK_HEAD_FLAG);
         out.writeInt(len);
         out.writeShort(msg.getId());
-        out.writeByte(msg.getEncryptType());
+        out.writeByte(msg.getEncrypt());
         out.writeBytes(msg.toArray());
     }
 }

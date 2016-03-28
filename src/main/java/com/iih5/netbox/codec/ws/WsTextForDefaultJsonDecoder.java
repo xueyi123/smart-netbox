@@ -14,7 +14,7 @@ package com.iih5.netbox.codec.ws;/*
  * under the License.
  */
 
-import com.iih5.netbox.message.JsonMessage;
+import com.iih5.netbox.message.StringMessage;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
 
@@ -30,8 +30,8 @@ public class WsTextForDefaultJsonDecoder extends WsTextDecoder{
             short msgId = Short.valueOf(arr[0]);
             byte encr =Byte.valueOf(arr[1]);
             String content = arr[2];
-            JsonMessage jm= new JsonMessage(msgId);
-            jm.setEncryptType(encr);
+            StringMessage jm= new StringMessage(msgId);
+            jm.setEncrypt(encr);
             jm.setContent(content);
             out.add(jm);
         }

@@ -14,39 +14,70 @@ package com.iih5.netbox.message;/*
  * under the License.
  */
 
-import com.google.protobuf.AbstractMessage;
 import com.google.protobuf.AbstractMessageLite;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.MessageLite;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
+/**
+ * google_proto_buffer消息
+ */
 public class ProtoMessage extends Message{
     private byte[] message;
+    private byte encrypt;
     public ProtoMessage(short id) {
         super(id);
     }
+    /**
+     * 获取加密类型 0=不加密，默认为0，其他用户自定义
+     * @return
+     */
+    public byte getEncrypt() {
+        return encrypt;
+    }
+    /**
+     * 设置加密类型，0=不加密，默认为0，其他用户自定义
+     * @param encrypt
+     */
+    public void setEncrypt(byte encrypt) {
+        this.encrypt = encrypt;
+    }
+
+    /**
+     * 设置消息内容
+     * @param builder
+     */
+    public void setContent(AbstractMessageLite.Builder<?> builder){
+        this.message=builder.build().toByteArray();
+    }
+
+    /**
+     * 设置消息内容
+     * @param content
+     */
     public void setContent(byte[] content){
         this.message=content;
     }
-    public ProtoMessage(short id,AbstractMessageLite.Builder<?> builder) {
-        super(id);
-        this.message=builder.build().toByteArray();
-    }
+
+    /**
+     * 转换为具体的proto对象
+     * @param builder
+     * @return
+     * @throws InvalidProtocolBufferException
+     */
     public AbstractMessageLite.Builder<?> parseObject(AbstractMessageLite.Builder<?> builder) throws InvalidProtocolBufferException {
         return builder.mergeFrom(message);
     }
+
+    /**
+     * 返回proto内容byte[]
+     * @return
+     */
     public byte[] toArray() {
         return message;
     }
 
-    public void resetReaderIndex() {
-
-    }
-
-    public <T> T parseObject(Class<T> clazz) throws Exception {
-        throw new UnsupportedOperationException("ProtoMessage 协议不支持此方法");
+    @Override
+    public String toString() {
+        return message.toString();
     }
 
 }

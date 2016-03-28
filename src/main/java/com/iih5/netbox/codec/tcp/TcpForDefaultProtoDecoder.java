@@ -81,7 +81,7 @@ public class TcpForDefaultProtoDecoder extends TcpDecoder {
 		ByteBuf b = Unpooled.buffer(dataSize);
 		buffer.readBytes(b);
 		ProtoMessage message=new ProtoMessage(msgId);
-		message.setEncryptType(encr);
+		message.setEncrypt(encr);
 		message.setContent(b.array());
 		out.add(message);
 	}

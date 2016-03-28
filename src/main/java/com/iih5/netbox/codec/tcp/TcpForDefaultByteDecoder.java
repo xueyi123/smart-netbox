@@ -80,7 +80,7 @@ public class TcpForDefaultByteDecoder extends TcpDecoder {
 		ByteBuf b = Unpooled.buffer(dataSize);
 		buffer.readBytes(b);
 		ByteMessage message=new ByteMessage(msgId);
-		message.setEncryptType(encr);
+		message.setEncrypt(encr);
 		message.setContent( b);
 		out.add(message);
 	}

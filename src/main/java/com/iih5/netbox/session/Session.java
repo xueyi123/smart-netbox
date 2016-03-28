@@ -21,6 +21,7 @@ import com.iih5.netbox.codec.ws.WsBinaryEncoder;
 import com.iih5.netbox.codec.ws.WsTextEncoder;
 import com.iih5.netbox.core.ProtocolConstant;
 import com.iih5.netbox.core.TransformType;
+import com.iih5.netbox.message.ByteMessage;
 import com.iih5.netbox.message.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -121,7 +122,10 @@ public class Session implements ISession {
 	public void send(Message msg){
 		if (channel!=null) {
 			if (ProtocolConstant.transformType == TransformType.TCP) {
-				msg.resetReaderIndex();
+				if (msg instanceof ByteMessage){
+					ByteMessage byteMessage = (ByteMessage) msg;
+					byteMessage.resetReaderIndex();
+				}
 				channel.writeAndFlush(msg);
 			}else if (ProtocolConstant.transformType == TransformType.WS_BINARY){
 				try{
@@ -144,7 +148,10 @@ public class Session implements ISession {
 					//
 				}
 			}else {
-				msg.resetReaderIndex();
+				if (msg instanceof ByteMessage){
+					ByteMessage byteMessage = (ByteMessage) msg;
+					byteMessage.resetReaderIndex();
+				}
 				channel.writeAndFlush(msg);
 			}
 		}

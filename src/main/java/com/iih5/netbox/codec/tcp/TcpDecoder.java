@@ -1,7 +1,7 @@
 package com.iih5.netbox.codec.tcp;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
- * The SmartORM Project licenses this file to you under the Apache License,
+ * The Smart-NetBox Project licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at:
  *

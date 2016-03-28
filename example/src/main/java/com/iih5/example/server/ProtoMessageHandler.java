@@ -19,6 +19,7 @@ package com.iih5.example.server;
 import com.iih5.netbox.annotation.Protocol;
 import com.iih5.netbox.annotation.Request;
 import com.iih5.netbox.message.Message;
+import com.iih5.netbox.message.ProtoMessage;
 import com.iih5.netbox.session.ISession;
 import com.iih5.example.domain.Example;
 
@@ -29,7 +30,8 @@ public class ProtoMessageHandler {
 	//注：协议号是不能重复的
 	@Protocol(value=1001)
 	public void abc2(Message msg, ISession session) throws Exception {
-		Example.Message.Builder message = (Example.Message.Builder)msg.parseObject(Example.Message.newBuilder());
+		ProtoMessage protoMessage = (ProtoMessage)msg;
+		Example.Message.Builder message = (Example.Message.Builder)protoMessage.parseObject(Example.Message.newBuilder());
 		message.getText();
 		message.getNumber();
 		System.out.println(message.getText());

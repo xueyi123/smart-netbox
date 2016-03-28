@@ -14,29 +14,16 @@ package com.iih5.netbox.message;/*
  * under the License.
  */
 
-import com.google.protobuf.AbstractMessageLite;
-import com.google.protobuf.InvalidProtocolBufferException;
+import com.alibaba.fastjson.JSON;
 
-import java.lang.reflect.InvocationTargetException;
-
+/**
+ * 消息基础类，是一个抽象类
+ */
 public abstract class Message {
     /**消息id*/
     private short id;
-    /**加密类型，默认不加密*/
-    private byte encryptType=0;
-    /**
-     * @param id 协议ID
-     */
-    public Message(short id){
-        this.id=id;
-    }
-    /**
-     * @param id 协议ID
-     * @param encr 加密类型，默认不加密
-     */
-    public Message(short id,byte encr){
-        this.id=id;
-        this.encryptType=encr;
+    public Message(short msgId){
+        this.id=msgId;
     }
     public short getId() {
         return id;
@@ -44,21 +31,7 @@ public abstract class Message {
     public void setId(short id) {
         this.id = id;
     }
-
-    public byte getEncryptType() {
-        return encryptType;
-    }
-    public void setEncryptType(byte encryptType) {
-        this.encryptType = encryptType;
-    }
     public abstract  byte[] toArray();
 
-    public abstract void resetReaderIndex();
-
-    public abstract <T> T parseObject(Class<T> clazz) throws  Exception;
-
-    public AbstractMessageLite.Builder<?> parseObject(AbstractMessageLite.Builder<?> builder) throws InvalidProtocolBufferException {
-
-        return null;
-    }
+    public abstract String toString();
 }

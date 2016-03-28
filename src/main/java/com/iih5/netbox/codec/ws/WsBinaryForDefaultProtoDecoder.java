@@ -42,7 +42,7 @@ public class WsBinaryForDefaultProtoDecoder extends WsBinaryDecoder{
         ByteBuf msgBuf = Unpooled.buffer(buffer.readableBytes());//content
         buffer.readBytes(msgBuf);
         ProtoMessage m = new ProtoMessage(msgId);
-        m.setEncryptType(encr);
+        m.setEncrypt(encr);
         m.setContent(msgBuf.array());
         out.add(m);
     }

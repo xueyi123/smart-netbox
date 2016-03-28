@@ -14,8 +14,7 @@ package com.iih5.netbox.codec.ws;/*
  * under the License.
  */
 
-import com.iih5.netbox.codec.ws.WsTextEncoder;
-import com.iih5.netbox.message.JsonMessage;
+import com.iih5.netbox.message.StringMessage;
 import io.netty.channel.Channel;
 
 public class WsTextForDefaultJsonEncoder extends WsTextEncoder{
@@ -24,7 +23,7 @@ public class WsTextForDefaultJsonEncoder extends WsTextEncoder{
     public void encode(Channel ctx, Object msg, StringBuffer text) {
         synchronized (this){
             //Text协议定义: "【协议ID】#【加密类型】#【内容】",比如 10001#0#hello world!
-            JsonMessage jm= (JsonMessage) msg;
+            StringMessage jm= (StringMessage) msg;
             StringBuffer sb= new StringBuffer();
             sb.append(jm.getId());
             sb.append("#");

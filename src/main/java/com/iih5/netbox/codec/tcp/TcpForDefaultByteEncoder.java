@@ -47,7 +47,7 @@ public class TcpForDefaultByteEncoder extends TcpEncoder {
 		m=byteMessage.toArray();
 		packLen = m.length +HEAD_SIZE;
 		msgId=byteMessage.getId();
-		encr=byteMessage.getEncryptType();
+		encr=byteMessage.getEncrypt();
 
 		out.writeByte(ProtocolConstant.PACK_HEAD_FLAG);
 		out.writeInt(packLen);
