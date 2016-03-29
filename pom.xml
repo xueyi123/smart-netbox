@@ -37,6 +37,7 @@
         </dependency>
     </dependencies>
 
+
     <name>smart-netbox</name>
     <description>一个基于Netty的TCP/WebSocket服务端网络框架,性能高效,稳定,简单易上手</description>
     <url>http://www.iih5.com/</url>
