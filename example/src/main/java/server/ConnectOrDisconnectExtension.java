@@ -1,4 +1,4 @@
-package com.iih5.example.tcpclient;/*
+/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,
@@ -13,20 +13,27 @@ package com.iih5.example.tcpclient;/*
  * License for the specific language governing permissions and limitations
  * under the License.
  */
+package server;
 
-import java.io.IOException;
 
-public interface ISession {
-    /// <summary>
-    /// 获取channel
-    /// </summary>
-    /// <returns></returns>
-    Client getNetboxClient();
+import com.iih5.netbox.annotation.InOut;
+import com.iih5.netbox.core.ConnectExtension;
+import com.iih5.netbox.session.ISession;
+import com.iih5.netbox.session.SessionManager;
 
-    /// <summary>
-    /// 发送消息
-    /// </summary>
-    /// <param name="msg"></param>
-    void send(Message msg) throws IOException;
+@InOut("connect/disconnect callback")
+public class ConnectOrDisconnectExtension extends ConnectExtension {
+
+	public void connect(ISession session) {
+		// TODO Auto-generated method stub
+		System.err.println("n,,,,,,,,连接成功、、、、、、、、、、、...");
+
+	}
+
+	public void disConnect(ISession session) {
+		// TODO Auto-generated method stub
+		System.err.println(",,,,,,,,,断开连接、、、、、、、、、、、...");
+	}
+
 
 }

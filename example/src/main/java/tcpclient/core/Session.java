@@ -1,4 +1,4 @@
-/*
+package tcpclient.core;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,
@@ -13,14 +13,20 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.iih5.example.client.websocket;
 
+import java.io.IOException;
 
-public class Startup {
-	public static WebSocketClient client;
-	public static void main(String[] args) {
-		System.err.println("---------------Websocket测试---------------");
-		client = new WebSocketClient("ws://127.0.0.1:9230/websocket");
-		
-	}
+public class Session implements ISession {
+    private Client _client;
+    public Session(Client client)
+    {
+        _client = client;
+    }
+    public Client getNetboxClient()
+    {
+        return _client;
+    }
+    public void send(Message msg) throws IOException {
+        _client.send(msg);
+    }
 }

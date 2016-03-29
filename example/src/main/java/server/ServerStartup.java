@@ -13,13 +13,14 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.iih5.example.server;
+package server;
 
 
 import com.iih5.netbox.NetBoxEngine;
 import com.iih5.netbox.NetBoxEngineSetting;
 import com.iih5.netbox.codec.tcp.TcpForDefaultByteDecoder;
 import com.iih5.netbox.codec.tcp.TcpForDefaultByteEncoder;
+import com.iih5.netbox.codec.tcp.TcpForDefaultProtoDecoder;
 import com.iih5.netbox.codec.tcp.TcpForDefaultProtoEncoder;
 import com.iih5.netbox.codec.ws.WsBinaryForDefaultByteDecoder;
 import com.iih5.netbox.codec.ws.WsBinaryForDefaultByteEncoder;
@@ -31,9 +32,9 @@ public class ServerStartup {
 	public static void main(String[] args) throws Exception {
 		System.out.println("服务端启动");
 		NetBoxEngineSetting setting  = new NetBoxEngineSetting();
-		setting.setBasePackage("com.iih5.example.server");//handler所在目录
+		setting.setBasePackage("server");//handler所在目录
 		setting.setPort(9230);
-		setting.setProtocolCoder(new WsBinaryForDefaultByteEncoder(),new WsBinaryForDefaultByteDecoder());
+		setting.setProtocolCoder(new TcpForDefaultProtoEncoder(),new TcpForDefaultProtoDecoder());
 		setting.setDebug(true);
 		NetBoxEngine boxEngine = new NetBoxEngine();
 		boxEngine.setSettings(setting);

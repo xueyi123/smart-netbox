@@ -1,4 +1,4 @@
-package com.iih5.example.tcpclient;/*
+package tcpclient;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,
@@ -14,9 +14,7 @@ package com.iih5.example.tcpclient;/*
  * under the License.
  */
 
-import io.netty.buffer.ByteBuf;
-
-import java.io.DataInputStream;
+import tcpclient.core.Client;
 
 public class TestMain {
     public static void main(String[] args) {
@@ -26,11 +24,11 @@ public class TestMain {
         message.writeDouble(1000.1);
         message.writeUTF8("king,你好,welcome to china");
         message.writeFloat(1000F);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         for (int i = 0; i < 100; i++) {
             client.send(message);
         }

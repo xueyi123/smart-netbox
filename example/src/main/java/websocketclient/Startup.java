@@ -13,27 +13,14 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.iih5.example.server;
+package websocketclient;
 
 
-import com.iih5.netbox.annotation.InOut;
-import com.iih5.netbox.core.ConnectExtension;
-import com.iih5.netbox.session.ISession;
-import com.iih5.netbox.session.SessionManager;
-
-@InOut("connect/disconnect callback")
-public class ConnectOrDisconnectExtension extends ConnectExtension {
-
-	public void connect(ISession session) {
-		// TODO Auto-generated method stub
-		System.err.println("n,,,,,,,,连接成功、、、、、、、、、、、...");
-
+public class Startup {
+	public static WebSocketClient client;
+	public static void main(String[] args) {
+		System.err.println("---------------Websocket测试---------------");
+		client = new WebSocketClient("ws://127.0.0.1:9230/websocket");
+		
 	}
-
-	public void disConnect(ISession session) {
-		// TODO Auto-generated method stub
-		System.err.println(",,,,,,,,,断开连接、、、、、、、、、、、...");
-	}
-
-
 }

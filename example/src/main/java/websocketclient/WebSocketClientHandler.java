@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.iih5.example.client.websocket;
+package websocketclient;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -59,10 +59,6 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
             handshaker.finishHandshake(ch, (FullHttpResponse) msg);
             handshakeFuture.setSuccess();
             System.err.println("链接成功");
-            //text测试
-//            for (int i = 0; i < 10; i++) {
-//                sendText((short) 4001,"你说这是什么问题啊啊啊啊啊啊",ch);
-//            }
             //binary测试
             for (int i = 0; i < 10; i++) {
                 ByteBuf byteBuf =Unpooled.buffer();

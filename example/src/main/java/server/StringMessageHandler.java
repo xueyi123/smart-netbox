@@ -1,4 +1,4 @@
-package com.iih5.example.server;/*
+package server;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,

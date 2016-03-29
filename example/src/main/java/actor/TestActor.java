@@ -1,7 +1,7 @@
 /*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
- * The SmartORM Project licenses this file to you under the Apache License,
+ * The Smart-NetBox Project licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at:
  *
@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package com.iih5.example.actor;
+package actor;
 
 import com.iih5.netbox.actor.CurrentUtils;
 import com.iih5.netbox.actor.IActor;
@@ -23,7 +23,7 @@ import com.iih5.netbox.actor.QueueActorManager;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class Mtest {
+public class TestActor {
 
 	public static void main(String[] args) {
 		// System.out.println(DateUtil.convertDateToStr(new Date(), DateUtil.TIME_FORMAT_MSEL));
@@ -41,6 +41,7 @@ public class Mtest {
 		IActor actor= manager.createActor();
 		//actor.setExecutor();
 		for (int i = 0; i < 10000; i++) {
+
 			Future<?> d= actor.scheduledTask(new Runnable() {
 				public void run() {
 					System.out.println("hello world");

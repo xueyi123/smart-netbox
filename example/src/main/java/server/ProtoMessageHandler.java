@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.iih5.example.server;
+package server;
 
 
 import com.iih5.netbox.annotation.Protocol;
@@ -21,7 +21,7 @@ import com.iih5.netbox.annotation.Request;
 import com.iih5.netbox.message.Message;
 import com.iih5.netbox.message.ProtoMessage;
 import com.iih5.netbox.session.ISession;
-import com.iih5.example.domain.Example;
+import proto.Example;
 
 import java.util.concurrent.TimeUnit;
 

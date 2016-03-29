@@ -1,4 +1,4 @@
-package com.iih5.example.tcpclient;/*
+package tcpclient.core;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,
@@ -14,21 +14,19 @@ package com.iih5.example.tcpclient;/*
  * under the License.
  */
 
-import com.iih5.netbox.session.*;
-
 import java.io.IOException;
 
-public class Session implements ISession {
-    private Client _client;
-    public Session(Client client)
-    {
-        _client = client;
-    }
-    public Client getNetboxClient()
-    {
-        return _client;
-    }
-    public void send(Message msg) throws IOException {
-        _client.send(msg);
-    }
+public interface ISession {
+    /// <summary>
+    /// 获取channel
+    /// </summary>
+    /// <returns></returns>
+    Client getNetboxClient();
+
+    /// <summary>
+    /// 发送消息
+    /// </summary>
+    /// <param name="msg"></param>
+    void send(Message msg) throws IOException;
+
 }

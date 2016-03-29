@@ -1,4 +1,4 @@
-package com.iih5.example.tcpclient;/*
+package tcpclient;/*
  * Copyright 2016 xueyi (1581249005@qq.com)
  *
  * The SmartORM Project licenses this file to you under the Apache License,
@@ -13,6 +13,10 @@ package com.iih5.example.tcpclient;/*
  * License for the specific language governing permissions and limitations
  * under the License.
  */
+
+import tcpclient.core.IHandler;
+import tcpclient.core.ISession;
+import tcpclient.core.Message;
 
 public class TestHandler implements IHandler {
     public void connect(ISession session) {
