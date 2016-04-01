@@ -15,9 +15,8 @@
  */
 package com.iih5.netbox.websocket;
 
+import com.iih5.actor.IActor;
 import com.iih5.netbox.NetBoxEngine;
-import com.iih5.netbox.actor.IActor;
-import com.iih5.netbox.annotation.Protocol;
 import com.iih5.netbox.codec.ws.WsBinaryDecoder;
 import com.iih5.netbox.codec.ws.WsTextDecoder;
 import com.iih5.netbox.core.AnnObject;

@@ -15,11 +15,10 @@
  */
 package com.iih5.netbox.session;
 
-import com.iih5.netbox.actor.CurrentUtils;
-import com.iih5.netbox.actor.IActor;
-import com.iih5.netbox.actor.QueueActorManager;
+import com.iih5.actor.ActorManager;
+import com.iih5.actor.IActor;
+import com.iih5.actor.util.ThreadFactoryUtil;
 import io.netty.channel.Channel;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,7 +29,7 @@ public class SessionManager {
 	//uid<->channel的关联
 	private Map<String, Channel> uidChannel = new ConcurrentHashMap<String, Channel>();
 	//actor管理
-	private QueueActorManager actorManager;
+	private ActorManager actorManager;
 	//actor管理线程数量
 	private int threadNum=16;
 	private static SessionManager cache=new SessionManager();
@@ -66,15 +65,15 @@ public class SessionManager {
 	 * 设置session线程管理数量，默认16个
 	 * @param threadNum
      */
-	public void setSessionTheadNum(int threadNum){
+	public void setSessionThreadNum(int threadNum){
 		this.threadNum=threadNum;
 	}
-	public void setActorManager(QueueActorManager manager) {
+	public void setActorManager(ActorManager manager) {
 		this.actorManager=manager;
 	}
 	public IActor createActor() {
 		if (this.actorManager==null) {
-			this.actorManager = new QueueActorManager(threadNum, CurrentUtils.createThreadFactory("User-Pool-"));
+			this.actorManager = new ActorManager(threadNum, ThreadFactoryUtil.createThreadFactory("User-Pool-"));
 		}
 		return actorManager.createActor();
 	}
