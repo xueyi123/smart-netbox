@@ -63,4 +63,4 @@ SessionManager是个全局的Session管理类，利用这个类管理Session的�
 ##目前已经提供java/c#客户端API，后续后继续加上各个语言的客户端API,方便同学们使用
 ##例子在example模块下面
 ##API查看地址
-http://doc.iih5.com/netbox/index.html
+http://doc.iih5.com/smart-netbox/index.html
