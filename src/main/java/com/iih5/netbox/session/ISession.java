@@ -15,7 +15,7 @@
  */
 package com.iih5.netbox.session;
 
-import com.iih5.netbox.actor.IActor;
+import com.iih5.actor.IActor;
 import com.iih5.netbox.message.Message;
 import io.netty.channel.Channel;
 

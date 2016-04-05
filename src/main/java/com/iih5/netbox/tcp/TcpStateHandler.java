@@ -16,8 +16,8 @@
 package com.iih5.netbox.tcp;
 
 
+import com.iih5.actor.IActor;
 import com.iih5.netbox.NetBoxEngine;
-import com.iih5.netbox.actor.IActor;
 import com.iih5.netbox.core.AnnObject;
 import com.iih5.netbox.core.CmdHandlerCache;
 import com.iih5.netbox.core.GlobalConstant;

@@ -16,9 +16,9 @@
 
 package actor;
 
-import com.iih5.netbox.actor.CurrentUtils;
-import com.iih5.netbox.actor.IActor;
-import com.iih5.netbox.actor.QueueActorManager;
+import com.iih5.actor.ActorManager;
+import com.iih5.actor.IActor;
+import com.iih5.actor.util.ThreadFactoryUtil;
 
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +27,7 @@ public class TestActor {
 
 	public static void main(String[] args) {
 		// System.out.println(DateUtil.convertDateToStr(new Date(), DateUtil.TIME_FORMAT_MSEL));
-		QueueActorManager manager = new QueueActorManager(8, CurrentUtils.createThreadFactory("Game-Table-Pool-"));
+		ActorManager manager = new ActorManager(8, ThreadFactoryUtil.createThreadFactory("Game-Table-Pool-"));
 //		for (int i = 0; i < 1000; i++) {
 //			IActor actor= manager.createActor();
 //			try {

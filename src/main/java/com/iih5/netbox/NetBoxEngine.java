@@ -15,8 +15,8 @@
  */
 package com.iih5.netbox;
 
-import com.iih5.netbox.actor.CurrentUtils;
-import com.iih5.netbox.actor.QueueActorManager;
+import com.iih5.actor.ActorManager;
+import com.iih5.actor.util.ThreadFactoryUtil;
 import com.iih5.netbox.annotation.InOut;
 import com.iih5.netbox.annotation.Protocol;
 import com.iih5.netbox.annotation.Request;
@@ -57,7 +57,7 @@ public class NetBoxEngine {
 	/**启动网络服务*/
 	public void start() {
 		if (settings.getPlayerThreadSize()>0){
-			SessionManager.getInstance().setActorManager(new QueueActorManager(settings.getPlayerThreadSize(), CurrentUtils.createThreadFactory("User-Pool-")));
+			SessionManager.getInstance().setActorManager(new ActorManager(settings.getPlayerThreadSize(), ThreadFactoryUtil.createThreadFactory("User-Pool-")));
 		}else {
 			logger.error("用户管理线程数量不能小于1个!");
 			throw new UnsupportedOperationException("用户管理线程数量不能小于1个!");
