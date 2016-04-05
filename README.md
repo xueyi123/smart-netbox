@@ -14,6 +14,7 @@
 <br>NetBoxEngine boxEngine = new NetBoxEngine();
 <br>boxEngine.setSettings(setting);
 <br>boxEngine.start();
+
 ###配置说明
 <br>NetBoxEngineSetting 是 NetBoxEngine 的配置类，字段如下
 <br>void setPort(int port) //监听端口
