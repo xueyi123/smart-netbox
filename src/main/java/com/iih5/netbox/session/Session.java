@@ -140,7 +140,7 @@ public class Session implements ISession {
 				try{
 					StringBuffer text = new StringBuffer();
 					WsTextEncoder decoder= (WsTextEncoder) ProtocolConstant.wsTextEncoder.getClass().newInstance();
-					Method method =decoder.getClass().getMethod("encode",Channel.class,Object.class,String.class);
+					Method method =decoder.getClass().getMethod("encode",Channel.class,Object.class,StringBuffer.class);
 					method.invoke(decoder,channel,msg,text);
 					channel.writeAndFlush(new TextWebSocketFrame(text.toString()));
 				}catch (Exception e){
