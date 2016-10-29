@@ -71,4 +71,24 @@ public class TcpForDefaultProtoDecoder extends TcpDecoder {
 		message.setContent(b.array());
 		out.add(message);
 	}
+	public ProtoMessage unPack(byte[] arr){
+		ByteBuf buffer = Unpooled.copiedBuffer(arr);
+		//【1】包头判断，非法数据则清除，并考虑是否断掉连接
+		byte header_name= buffer.readByte();
+		//包长度(4个字节)
+		int packSize = buffer.readInt();
+		//消息号(2个字节)
+		short msgId  = buffer.readShort();
+		//加密段(1个字节)
+		byte encr=buffer.readByte();
+		//在读出包头后，还剩下实际数据长度的字节数
+		int dataSize=packSize-HEAD_SIZE;
+		// 数据对象组装
+		ByteBuf b = Unpooled.buffer(dataSize);
+		buffer.readBytes(b);
+		ProtoMessage message=new ProtoMessage(msgId);
+		message.setEncrypt(encr);
+		message.setContent(b.array());
+		return message;
+	}
 }

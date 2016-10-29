@@ -11,7 +11,7 @@
     <version>2.1.4</version>
     <!--打包上传时记得注释掉modules-->
     <!--<modules>-->
-        <!--<module>example</module>-->
+    <!--<module>example</module>-->
     <!--</modules>-->
 
     <dependencies>
