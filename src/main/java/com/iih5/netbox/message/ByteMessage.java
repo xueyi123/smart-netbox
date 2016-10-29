@@ -1,19 +1,10 @@
-package com.iih5.netbox.message;/*
- * Copyright 2016 xueyi (1581249005@qq.com)
- *
- * The Smart-NetBox Project licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at:
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- */
+package com.iih5.netbox.message;
 
+import com.iih5.netbox.codec.tcp.TcpForDefaultByteEncoder;
+import com.iih5.netbox.codec.ws.WsBinaryForDefaultByteEncoder;
+import com.iih5.netbox.codec.ws.WsBinaryForDefaultProtoEncoder;
+import com.iih5.netbox.core.ProtocolConstant;
+import com.iih5.netbox.core.TransformType;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -55,6 +46,14 @@ public class ByteMessage extends Message{
      */
     public ByteBuf getContent() {
         return buf;
+    }
+
+    /**
+     * 返回内容二进制
+     * @return
+     */
+    public byte[] getContentArray(){
+        return buf.array();
     }
     /**
      * 设置二进制内容
@@ -223,19 +222,6 @@ public class ByteMessage extends Message{
     }
 
     /**
-     * 返回内容byte[]
-     * @return
-     */
-    public byte[] toArray() {
-        return buf.array();
-    }
-
-    @Override
-    public String toString() {
-        return buf.toString();
-    }
-
-    /**
      * 复位读指针
      */
     public void resetReaderIndex() {
@@ -257,5 +243,19 @@ public class ByteMessage extends Message{
         buf.resetReaderIndex();
         buf.resetWriterIndex();
 
+    }
+
+    public byte[] toArray() {
+        ByteBuf byteBuf=Unpooled.buffer();
+        if (ProtocolConstant.transformType == TransformType.TCP){
+            TcpForDefaultByteEncoder encoder = new TcpForDefaultByteEncoder();
+            encoder.pack(this,byteBuf);
+            return byteBuf.array();
+        }else if (ProtocolConstant.transformType == TransformType.WS_BINARY){
+            WsBinaryForDefaultByteEncoder encoder = new WsBinaryForDefaultByteEncoder();
+            encoder.pack(this,byteBuf);
+            return byteBuf.array();
+        }
+        return null;
     }
 }

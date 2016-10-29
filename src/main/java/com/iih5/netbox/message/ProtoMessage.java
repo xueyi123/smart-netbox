@@ -1,21 +1,15 @@
-package com.iih5.netbox.message;/*
- * Copyright 2016 xueyi (1581249005@qq.com)
- *
- * The Smart-NetBox Project licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at:
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- */
+package com.iih5.netbox.message;
 
 import com.google.protobuf.AbstractMessageLite;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.iih5.netbox.codec.tcp.TcpForDefaultByteEncoder;
+import com.iih5.netbox.codec.tcp.TcpForDefaultProtoDecoder;
+import com.iih5.netbox.codec.tcp.TcpForDefaultProtoEncoder;
+import com.iih5.netbox.codec.ws.WsBinaryForDefaultProtoEncoder;
+import com.iih5.netbox.core.ProtocolConstant;
+import com.iih5.netbox.core.TransformType;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 /**
  * google_proto_buffer消息
@@ -48,13 +42,20 @@ public class ProtoMessage extends Message{
     public void setContent(AbstractMessageLite.Builder<?> builder){
         this.message=builder.build().toByteArray();
     }
-
     /**
      * 设置消息内容
      * @param content
      */
     public void setContent(byte[] content){
         this.message=content;
+    }
+
+    /**
+     * 返回消息二进制
+     * @return
+     */
+    public byte[] getMessage(){
+        return  this.message;
     }
 
     /**
@@ -67,17 +68,18 @@ public class ProtoMessage extends Message{
         return builder.mergeFrom(message);
     }
 
-    /**
-     * 返回proto内容byte[]
-     * @return
-     */
     public byte[] toArray() {
-        return message;
-    }
-
-    @Override
-    public String toString() {
-        return message.toString();
+        ByteBuf byteBuf=Unpooled.buffer();
+        if (ProtocolConstant.transformType == TransformType.TCP){
+            TcpForDefaultProtoEncoder encoder = new TcpForDefaultProtoEncoder();
+            encoder.pack(this,byteBuf);
+            return byteBuf.array();
+        }else if (ProtocolConstant.transformType == TransformType.WS_BINARY){
+            WsBinaryForDefaultProtoEncoder encoder = new WsBinaryForDefaultProtoEncoder();
+            encoder.pack(this,byteBuf);
+            return byteBuf.array();
+        }
+        return null;
     }
 
 }
