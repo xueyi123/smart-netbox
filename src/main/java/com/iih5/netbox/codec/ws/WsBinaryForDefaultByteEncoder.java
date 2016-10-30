@@ -15,11 +15,11 @@ public class WsBinaryForDefaultByteEncoder extends WsBinaryEncoder{
     public void pack( Object message, ByteBuf out){
         ByteMessage msg = (ByteMessage) message;
         msg.resetReaderIndex();
-        int len=msg.toArray().length+7;
+        int len=msg.getContentArray().length+7;
         out.writeByte(ProtocolConstant.PACK_HEAD_FLAG);
         out.writeInt(len);
         out.writeShort(msg.getId());
         out.writeByte(msg.getEncrypt());
-        out.writeBytes(msg.toArray());
+        out.writeBytes(msg.getContentArray());
     }
 }

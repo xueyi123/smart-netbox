@@ -17,9 +17,9 @@ public class WsTextForDefaultJsonEncoder extends WsTextEncoder {
             StringBuffer sb = new StringBuffer();
             sb.append(jm.getId());
             sb.append("#");
-            sb.append(0);
+            sb.append(jm.getEncrypt());
             sb.append("#");
-            sb.append(jm.toString());
+            sb.append(jm.getContent());
             text.append(sb.toString());
         }
     }

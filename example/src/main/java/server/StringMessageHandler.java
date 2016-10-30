@@ -17,16 +17,17 @@ package server;/*
 import com.iih5.netbox.annotation.Protocol;
 import com.iih5.netbox.annotation.Request;
 import com.iih5.netbox.message.Message;
+import com.iih5.netbox.message.StringMessage;
 import com.iih5.netbox.session.ISession;
 
 @Request
 public class StringMessageHandler {
     //注：协议号是不能重复的
     @Protocol(value=4001)
-    public void test(Message msg, ISession session) throws Exception {
+    public void test(StringMessage msg, ISession session) throws Exception {
         short msgId= msg.getId();
         String content= msg.toString();
-        System.out.println(content);
+        System.out.println(msg.getContent());
         session.send(msg);
         //TODO ...
     }

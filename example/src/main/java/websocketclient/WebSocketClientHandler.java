@@ -15,6 +15,8 @@
  */
 package websocketclient;
 
+import com.iih5.netbox.codec.ws.WsTextForDefaultJsonDecoder;
+import com.iih5.netbox.message.StringMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -60,16 +62,21 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
             handshakeFuture.setSuccess();
             System.err.println("链接成功");
             //binary测试
-            for (int i = 0; i < 10; i++) {
-                ByteBuf byteBuf =Unpooled.buffer();
-                byteBuf.writeInt(3000008);
-                byteBuf.writeDouble(1001);
-                writeString("| hello world |",byteBuf);
-                byteBuf.writeFloat(888.05f);
-                sendBinary((short) 2001,byteBuf,ch);
+//            for (int i = 0; i < 10; i++) {
+//                ByteBuf byteBuf =Unpooled.buffer();
+//                byteBuf.writeInt(3000008);
+//                byteBuf.writeDouble(1001);
+//                writeString("| hello world |",byteBuf);
+//                byteBuf.writeFloat(888.05f);
+//                sendBinary((short) 2001,byteBuf,ch);
+//            }
+            //text
+            for (int i=0;i<10;i++){
+                sendText((short) 4001,"//////////////////////////////////",ch);
             }
             return;
         }
+
         WebSocketFrame frame = (WebSocketFrame) msg;
         if (frame instanceof PingWebSocketFrame) {
             ctx.channel().write(new PongWebSocketFrame(frame.content().retain()));
@@ -84,19 +91,22 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
 		    conBuf.readBytes(msgBuf);
 		    System.err.println("<<<<<<<protoId="+cmdId+"   ");
 		}else {
-			TextWebSocketFrame f= (TextWebSocketFrame)frame;
+            TextWebSocketFrame f= (TextWebSocketFrame)frame;
+            WsTextForDefaultJsonDecoder dd = new WsTextForDefaultJsonDecoder();
+            StringMessage sf= dd.unPack(f.text());
 			System.err.println(f.text());
+            System.out.println("=="+sf.getId()+"   "+sf.getContent());
 		}
     }
     public void sendText(short msgId,String str,Channel ch ){
-        //数据格式：msgId#text
-        ch.writeAndFlush(new TextWebSocketFrame(msgId+"#"+str));
+        //数据格式：msgId#0#text
+        ch.writeAndFlush(new TextWebSocketFrame(msgId+"#0#"+str));
     }
     public  void sendBinary(short msgId, ByteBuf buf, Channel ch){
         //包格式：包长度(int)+消息码(short)+数据段(byte[])
         int len=buf.array().length+7;
         ByteBuf byteBuf= Unpooled.buffer(len);
-        byteBuf.writeByte(43);
+        byteBuf.writeByte(43);//head flag
         byteBuf.writeInt(len);
         byteBuf.writeShort(msgId);
         byteBuf.writeByte(0);

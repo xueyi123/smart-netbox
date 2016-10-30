@@ -33,7 +33,7 @@ public class TcpForDefaultProtoEncoder extends TcpEncoder {
 		byte encr=0;
 		// 数据对象组装
 		ProtoMessage byteMessage = (ProtoMessage) message;
-		m=byteMessage.toArray();
+		m=byteMessage.getMessage();
 		packLen = m.length +HEAD_SIZE;
 		msgId=byteMessage.getId();
 		encr=byteMessage.getEncrypt();

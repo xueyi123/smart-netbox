@@ -7,12 +7,12 @@
     <groupId>com.iih5</groupId>
     <artifactId>smart-netbox</artifactId>
     <!--打包时记得把pom改为jar-->
-    <packaging>jar</packaging>
-    <version>2.1.4</version>
+    <packaging>pom</packaging>
+    <version>2.1.6</version>
     <!--打包上传时记得注释掉modules-->
-    <!--<modules>-->
-    <!--<module>example</module>-->
-    <!--</modules>-->
+    <modules>
+    <module>example</module>
+    </modules>
 
     <dependencies>
         <dependency>

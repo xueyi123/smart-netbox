@@ -33,7 +33,7 @@ public class TcpForDefaultByteEncoder extends TcpEncoder {
 		byte encr=0;
 		// 数据对象组装
 		ByteMessage byteMessage = (ByteMessage) message;
-		m=byteMessage.toArray();
+		m=byteMessage.getContentArray();
 		packLen = m.length +HEAD_SIZE;
 		msgId=byteMessage.getId();
 		encr=byteMessage.getEncrypt();
