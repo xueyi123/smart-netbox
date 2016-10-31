@@ -1,9 +1,6 @@
 package com.iih5.netbox.message;
 
-import com.alibaba.fastjson.JSON;
-
 import java.nio.charset.Charset;
-import java.util.List;
 
 /**
  * 字符串消息
@@ -44,26 +41,6 @@ public class StringMessage extends Message {
      */
     public void setEncrypt(byte encrypt) {
         this.encrypt = encrypt;
-    }
-
-    /**
-     * 把消息内容转换为Bean对象
-     * @param clazz
-     * @param <T>
-     * @return
-     */
-    public <T> T parseObject(Class<T> clazz) {
-        return  JSON.parseObject(content,clazz);
-    }
-
-    /**
-     * 把消息内容转换为数组列表
-     * @param clazz
-     * @param <T>
-     * @return
-     */
-    public <T> List<T> parseArray(Class<T> clazz) {
-        return JSON.parseArray(content,clazz);
     }
 
     /**
