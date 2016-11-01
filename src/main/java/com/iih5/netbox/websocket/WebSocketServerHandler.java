@@ -12,7 +12,6 @@ import com.iih5.netbox.message.Message;
 import com.iih5.netbox.session.ISession;
 import com.iih5.netbox.session.Session;
 import com.iih5.netbox.session.SessionManager;
-import com.iih5.netbox.util.ConsoleUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -166,7 +165,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
                         try {
                             cmdHandler.getMethod().invoke(cmdHandler.getClas().newInstance(), message, session);
                         } catch (Exception e) {
-                            logger.error("数据包分发错误： packSize:"+ ConsoleUtil.errException(e));
+                            logger.error("数据包分发错误： packSize:",e);
                         }
                     }
                 });
@@ -194,7 +193,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
                         try {
                             cmdHandler.getMethod().invoke(cmdHandler.getClas().newInstance(), message, session);
                         } catch (Exception e) {
-                            logger.error("《《《数据分发错误："+ConsoleUtil.errException(e));
+                            logger.error("《《《数据分发错误：",e);
                         }
                     }
                 });
