@@ -10,7 +10,6 @@ import com.iih5.netbox.core.*;
 import com.iih5.netbox.session.SessionManager;
 import com.iih5.netbox.tcp.TcpServerInitializer;
 import com.iih5.netbox.util.ClassUtil;
-import com.iih5.netbox.util.ConsoleUtil;
 import com.iih5.netbox.websocket.WebSocketServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -109,9 +108,9 @@ public class NetBoxEngine {
 						Object obj = class1.newInstance();
 						extension=(ConnectExtension)obj;
 					} catch (InstantiationException e) {
-						logger.error("加载Extension 出错："+ ConsoleUtil.errException(e));
+						logger.error("加载Extension 出错：",e);
 					} catch (IllegalAccessException e) {
-						logger.error("加载Extension 出错："+ ConsoleUtil.errException(e));
+						logger.error("加载Extension 出错：",e);
 					}
 				}
 			}
