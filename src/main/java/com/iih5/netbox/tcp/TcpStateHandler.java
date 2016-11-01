@@ -62,7 +62,7 @@ public class TcpStateHandler extends ChannelInboundHandlerAdapter {
                         try {
                             cmdHandler.getMethod().invoke(cmdHandler.getClas().newInstance(), message, session);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            logger.error("操作失敗",e);
                         }
                     }
                 });
