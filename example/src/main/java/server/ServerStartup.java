@@ -34,7 +34,7 @@ public class ServerStartup {
 		NetBoxEngineSetting setting  = new NetBoxEngineSetting();
 		setting.setBasePackage("server");//handler所在目录
 		setting.setPort(9230);
-		setting.setProtocolCoder(new TcpForDefaultProtoEncoder(),new TcpForDefaultProtoDecoder());
+		setting.setProtocolCoder(new WsTextForDefaultJsonEncoder(),new WsTextForDefaultJsonDecoder());
 		setting.setDebug(true);
 		NetBoxEngine boxEngine = new NetBoxEngine();
 		boxEngine.setSettings(setting);
