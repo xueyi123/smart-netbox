@@ -7,7 +7,8 @@ import com.iih5.netbox.message.ByteMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class TcpForDefaultByteDecoder extends TcpDecoder {
 	 */
 	//包头7个字节
 	private final static int HEAD_SIZE =7;
-	private Logger logger = Logger.getLogger(TcpForDefaultByteDecoder.class);
+	private Logger logger = LoggerFactory.getLogger(TcpForDefaultByteDecoder.class);
 	protected void decode(ChannelHandlerContext ctx, ByteBuf buffer,List<Object> out) throws Exception {
 		if (GlobalConstant.debug){
 			logger.info("收到数据《《 size:"+buffer.readableBytes());

@@ -17,14 +17,15 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
 
 public class NetBoxEngine {
-	private static Logger logger = Logger.getLogger(NetBoxEngine.class);
+	private static Logger logger = LoggerFactory.getLogger(NetBoxEngine.class);
 	public static ConnectExtension extension=null;
 	private NetBoxEngineSetting settings=null;
 	public NetBoxEngine() {
@@ -62,7 +63,7 @@ public class NetBoxEngine {
 							.channel(NioServerSocketChannel.class)
 							.childHandler(new WebSocketServerInitializer());
 					b.bind(settings.getPort()).sync();
-					logger.info("WebSocket port="+settings.getPort()+"启动成功！");
+					logger.info("WebSocket port="+settings.getPort()+" Start Success !");
 					logger.info("Open your web browser and navigate to http://127.0.0.1:" + settings.getPort() + '/');
 				}else {
 						b.group(bossGroup, workerGroup)
@@ -71,7 +72,7 @@ public class NetBoxEngine {
 							.channel(NioServerSocketChannel.class)
 							.childHandler(new TcpServerInitializer());
 					ChannelFuture f=b.bind(settings.getPort()).sync();
-					logger.info("TCP port="+settings.getPort()+"启动成功！");
+					logger.info("TCP port="+settings.getPort()+" Start Success !");
 				}
 			}
 		}catch (InterruptedException e) {

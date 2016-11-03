@@ -6,7 +6,8 @@ import com.iih5.netbox.core.ProtocolConstant;
 import com.iih5.netbox.message.ByteMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TcpForDefaultByteEncoder extends TcpEncoder {
 	/**
@@ -19,7 +20,7 @@ public class TcpForDefaultByteEncoder extends TcpEncoder {
 	 */
 	//包头7个字节
 	private final static int HEAD_SIZE =7;
-	private Logger logger = Logger.getLogger(TcpForDefaultByteDecoder.class);
+	private Logger logger = LoggerFactory.getLogger(TcpForDefaultByteDecoder.class);
 	protected void encode(ChannelHandlerContext ctx, Object message, ByteBuf out) throws Exception {
 		pack(message, out);
 	}

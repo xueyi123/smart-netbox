@@ -2,12 +2,13 @@ package com.iih5.netbox.codec.ws;
 
 import com.iih5.netbox.message.StringMessage;
 import io.netty.channel.Channel;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class WsTextForDefaultJsonDecoder extends WsTextDecoder {
-    private Logger logger = Logger.getLogger(WsTextForDefaultJsonDecoder.class);
+    private Logger logger = LoggerFactory.getLogger(WsTextForDefaultJsonDecoder.class);
 
     @Override
     public void decode(Channel ctx, String text, List<Object> out) {

@@ -5,12 +5,14 @@ import com.iih5.netbox.message.ByteMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.util.List;
 
 public class WsBinaryForDefaultByteDecoder extends WsBinaryDecoder{
-    private Logger logger = Logger.getLogger(WsBinaryForDefaultByteDecoder.class);
+    private Logger logger = LoggerFactory.getLogger(WsBinaryForDefaultByteDecoder.class);
     @Override
     public void decode(Channel ctx, ByteBuf buffer, List<Object> out) {
         byte headFlag=buffer.readByte(); //headFlag

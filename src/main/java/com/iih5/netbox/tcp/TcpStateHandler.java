@@ -15,11 +15,12 @@ import com.iih5.netbox.websocket.WebSocketServerHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class TcpStateHandler extends ChannelInboundHandlerAdapter {
-    private static Logger logger =Logger.getLogger(WebSocketServerHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(WebSocketServerHandler.class);
     //连接成功
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         if (GlobalConstant.debug){
@@ -62,7 +63,7 @@ public class TcpStateHandler extends ChannelInboundHandlerAdapter {
                         try {
                             cmdHandler.getMethod().invoke(cmdHandler.getClas().newInstance(), message, session);
                         } catch (Exception e) {
-                            logger.error("操作失敗",e);
+                            logger.error("操作失败",e);
                         }
                     }
                 });

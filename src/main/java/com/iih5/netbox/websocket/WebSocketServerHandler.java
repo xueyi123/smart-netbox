@@ -21,7 +21,8 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> {
-    private static Logger logger =Logger.getLogger(WebSocketServerHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(WebSocketServerHandler.class);
     private static final String WEBSOCKET_PATH = "/websocket";
 
     private WebSocketServerHandshaker handshaker;
