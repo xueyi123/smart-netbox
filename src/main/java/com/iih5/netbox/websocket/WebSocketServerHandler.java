@@ -86,25 +86,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
             sendHttpResponse(ctx, req, new DefaultFullHttpResponse(HTTP_1_1, BAD_REQUEST));
             return;
         }
-        if (req.getMethod() != GET) {
-            sendHttpResponse(ctx, req, new DefaultFullHttpResponse(HTTP_1_1, FORBIDDEN));
-            return;
-        }
-        if ("/".equals(req.getUri())) {
-            ByteBuf content = TestPage.getContent(getWebSocketLocation(req));
-            FullHttpResponse res = new DefaultFullHttpResponse(HTTP_1_1, OK, content);
-
-            res.headers().set(CONTENT_TYPE, "text/html; charset=UTF-8");
-            HttpHeaders.setContentLength(res, content.readableBytes());
-
-            sendHttpResponse(ctx, req, res);
-            return;
-        }
-        if ("/favicon.ico".equals(req.getUri())) {
-            FullHttpResponse res = new DefaultFullHttpResponse(HTTP_1_1, NOT_FOUND);
-            sendHttpResponse(ctx, req, res);
-            return;
-        }
         WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(getWebSocketLocation(req), null, false);
         handshaker = wsFactory.newHandshaker(req);
         if (handshaker == null) {
